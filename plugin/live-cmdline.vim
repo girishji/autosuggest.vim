@@ -7,7 +7,7 @@ endif
 
 vim9script
 
-g:loaded_cmdcomplete = true
+g:loaded_live_cmdline = true
 
 import autoload '../autoload/options.vim' as opt
 import autoload '../autoload/search.vim' as ser
@@ -16,25 +16,21 @@ import autoload '../autoload/cmd.vim'
 ser.Setup()
 cmd.Setup()
 
-def! g:CmdCompleteSetup(opts: dict<any>)
+def! g:LiveCmdlineSetup(opts: dict<any>)
     var update = (key) => {
 	if opts->has_key(key)
 	    opt.options[key]->extend(opts[key])
 	endif
     }
     update('search')
-    update('cmdline')
+    update('cmd')
 enddef
 
-def CmdCompleteEnable(flag: bool)
+def LiveCmdlineEnable(flag: bool)
     opt.options.search.enable = flag
-    opt.options.cmdline.enable = flag
+    opt.options.cmd.enable = flag
 enddef
-command! CmdCompleteEnable  CmdCompleteEnable(true)
-command! CmdCompleteDisable CmdCompleteEnable(false)
+command! LiveCmdlineEnable  CmdCompleteEnable(true)
+command! LiveCmdlineDisable CmdCompleteEnable(false)
 
-# highlight default link CmdCompleteMenu	    Pmenu
-# highlight default link CmdCompleteSelect    PmenuSel
 highlight default link SearchCompletePrefix    Special
-# highlight default link CmdCompleteSbar	    PmenuSbar
-# highlight default link CmdCompleteThumb	    PmenuThumb

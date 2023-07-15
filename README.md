@@ -1,31 +1,36 @@
-# search-complete
+# Live Cmdline
 
-Async search mode auto-completion plugin for Vim. Once you start using it
-you'll not want to go back!
+This plugin provides async-autocompletion for search and commands in cmdline-mode.
+Sometimes it helps to know what words (starting with a letter) are available in the buffer for search even before searching.
+If you liked Vim's `wildmenu`, you'd want popup autocompletion for completing commands and arguments.
 
 __How it helps?__
 
-- Use fewer keystrokes to search words. 
-- Preview searchable words in a popup menu. 
-- Search multiple words even across line boundary.
 - Unobtrusive and does not interfere with Vim's idioms.
+- Preview searchable words and commands in a popup menu.
+- Search multiple words even across line boundary; Fuzzy search.
+- Fast; Does not hang up on large files or while searching wildcard paths.
 
 __How to use it?__
 
-- Search using `/` or `?`.
+- Search using `/` or `?`. Enter commands using `:` as usual.
 - `<Tab>` and `<Shift-tab>` will select menu items.
 - `<Ctrl-E>` dismisses popup menu.
 - `<Enter>` accepts selection, and `<Esc>` dismisses search.
 - `<Ctrl-C>` will force popup menu to close.
+
+__Multiline Search__
+
 - Type the character between words (like `<Space>`) after the first word to include the second word in search.
 - Type `\n` at the end of the last word in a line to continue to next line.
+- Available only when fuzzy option is not selected.
 
-### Popup Menu
+### Normal Popup Menu
 
 [![asciicast](https://asciinema.org/a/dGNdbLbsTMSdaL8E4PonxQDKL.svg)](https://asciinema.org/a/dGNdbLbsTMSdaL8E4PonxQDKL)
 
 
-### Flat Popup Menu
+### Popup Menu over Statusline
 
 Main window remains fully visible since popup is positioned on the statusline.
 This is the default option.

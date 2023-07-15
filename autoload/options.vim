@@ -10,7 +10,7 @@ export var options: dict<any> = {
 	async: true,	# async search
 	fuzzy: true,    # fuzzy completion
     },
-    cmdline: {
+    cmd: {
 	enable: true,
 	delay: 10,      # delay before showing popup
 	pum: true,      # 'false' for flat menu, 'true' for stacked menu

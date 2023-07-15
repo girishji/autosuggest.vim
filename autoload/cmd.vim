@@ -2,7 +2,7 @@ vim9script
 
 import autoload './options.vim' as opt
 
-var options = opt.options.cmdline
+var options = opt.options.cmd
 
 var popup_winid: number
 
