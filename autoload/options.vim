@@ -8,7 +8,7 @@ export var options: dict<any> = {
 	range: 1000,	# line count per search attemp
 	timeout: 100,	# millisec to search, when non-async is specified
 	async: true,	# async search
-	fuzzy: true,    # fuzzy completion
+	fuzzy: false,   # fuzzy completion
     },
     cmd: {
 	enable: true,

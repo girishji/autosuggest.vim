@@ -124,7 +124,7 @@ def BufMatches(popup: dict<any>, interval: dict<any>): list<any>
 	    p.firstmatch = [lnum, cnum, p.context->len()]
 	endif
     endif
-    var pattern = $'\k*{p.context}\k*' # XXX: test if \S is better
+    var pattern = $'\k*{p.context}\k*'
     var [lnum, cnum] = [0, 0]
     var [startl, startc] = [0, 0]
     if p.async
@@ -232,7 +232,7 @@ def ShowPopupMenu(popup: dict<any>)
     p.winid->popup_setoptions({cursorline: false})
     clearmatches(p.winid)
     var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}' 
-    matchadd('SearchCompletePrefix', mpat, 10, -1, {window: p.winid})
+    matchadd('AS_SearchCompletePrefix', mpat, 10, -1, {window: p.winid})
     p.winid->popup_show()
     if !&incsearch # redraw only when noincsearch, otherwise highlight flickers
        :redraw
@@ -389,7 +389,7 @@ def SelectItem(popup: dict<any>, direction: string)
 	endif
 	clearmatches(p.winid)
 	var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}' 
-	matchadd('SearchCompletePrefix', mpat, 10, -1, {window: p.winid})
+	matchadd('AS_SearchCompletePrefix', mpat, 10, -1, {window: p.winid})
 	matchadd('PMenuSel', kwordpat, 11, -1, {window: p.winid})
     enddef
 
