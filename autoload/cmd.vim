@@ -110,7 +110,7 @@ def Verify(context: string): bool
     var cmd = ['vim', '-es', $'+:silent! call getcompletion("{context}", "cmdline") | q!']
     var vjob: job = job_start(cmd)
     while start->reltime()->reltimefloat() * 1000 < Timeout
-	if vjob->job_status() == 'run'
+	if vjob->job_status() ==? 'run'
 	    :sleep 5m
 	else 
 	    break

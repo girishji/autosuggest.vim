@@ -1,53 +1,62 @@
-# Live Cmdline
+# AutoSuggest: Autocompletion For Vim's Commandline Mode
 
-This plugin provides async-autocompletion for search and commands in cmdline-mode.
-Sometimes it helps to know what words (starting with a letter) are available in the buffer for search even before searching.
-If you liked Vim's `wildmenu`, you'd want popup autocompletion for completing commands and arguments.
+Wouldn't it be nice to have autocomplete during search and command execution?
+This unobtrusive plugin simply opens a popup menu and shows 
+autocompletion options when you search (`/`, `?`) or enter commands (`:`) in
+commandline-mode.
 
 __How it helps?__
 
-- Unobtrusive and does not interfere with Vim's idioms.
-- Preview searchable words and commands in a popup menu.
-- Search multiple words even across line boundary; Fuzzy search.
-- Fast; Does not hang up on large files or while searching wildcard paths.
+- Preview searchable words and commands (and their arguments).
+- Search multiple words, even across line boundary; Fuzzy search.
+- All Vim idioms work as before. No surprises.
+- Fast, does not hang up when searching large files or expanding wildcards.
 
 __How to use it?__
 
-- Search using `/` or `?`. Enter commands using `:` as usual.
+- Search using `/` or `?` or enter commands using `:` as usual.
 - `<Tab>` and `<Shift-tab>` will select menu items.
 - `<Ctrl-E>` dismisses popup menu.
 - `<Enter>` accepts selection, and `<Esc>` dismisses search.
 - `<Ctrl-C>` will force popup menu to close.
 
-__Multiline Search__
+If you like this plugin, checkout insert-mode tab completion plugin
+([Vimcomplete](https://github.com/girishji/vimcomplete)).
+
+### Search
+
+[![asciicast](https://asciinema.org/a/dGNdbLbsTMSdaL8E4PonxQDKL.svg)](https://asciinema.org/a/dGNdbLbsTMSdaL8E4PonxQDKL)
+
+[![asciicast](https://asciinema.org/a/vLqdbH0ITj6v6toDTWqyXP0si.svg)](https://asciinema.org/a/vLqdbH0ITj6v6toDTWqyXP0si)
+
+### Command
+
+[![asciicast](https://asciinema.org/a/eGWd650BZa7uiRi6lv76qYMRG.svg)](https://asciinema.org/a/eGWd650BZa7uiRi6lv76qYMRG)
+
+### Popup Menu over Statusline
+
+[![asciicast](https://asciinema.org/a/DrvlJnoumCA9jWuMH8WGBCVJz.svg)](https://asciinema.org/a/DrvlJnoumCA9jWuMH8WGBCVJz)
+
+[![asciicast](https://asciinema.org/a/HLRW3J95pcQFbuC4Kwttk6Ofo.svg)](https://asciinema.org/a/HLRW3J95pcQFbuC4Kwttk6Ofo)
+
+Note: Multiline Search
 
 - Type the character between words (like `<Space>`) after the first word to include the second word in search.
 - Type `\n` at the end of the last word in a line to continue to next line.
 - Available only when fuzzy option is not selected.
 
-### Normal Popup Menu
-
-[![asciicast](https://asciinema.org/a/dGNdbLbsTMSdaL8E4PonxQDKL.svg)](https://asciinema.org/a/dGNdbLbsTMSdaL8E4PonxQDKL)
-
-
-### Popup Menu over Statusline
-
-Main window remains fully visible since popup is positioned on the statusline.
-This is the default option.
-
-[![asciicast](https://asciinema.org/a/DrvlJnoumCA9jWuMH8WGBCVJz.svg)](https://asciinema.org/a/DrvlJnoumCA9jWuMH8WGBCVJz)
-
 # Features
 
-- Does not interfere with `c|d|y /pattern` commands (copy/delete/yank).
-- Search command does not get bogged down when searching large files.
+- Does not interfere with `[c|d|y]/{pattern}` commands (copy/delete/yank).
 - Respects forward (`/`) and reverse (`?`) search when displaying menu items.
-- Does not interfere with search-history recall (arrow keys, <Ctrl-N/P> are not mapped).
 - Does not interfere with search-highlighting and incremental-search.
+- Does not interfere with search-history recall (arrow keys, `<Ctrl-N/P>` are not mapped).
+- Fuzzy search option.
+- Will not hang under any circumstance (including `**` wildcards)
+- Command names, arguments, Vimscript functions, variables, etc., are autocompleted.
 - Switch between normal popup menu and flat menu.
-- Fully customizable colors and popup menu options.
-- Can search across space and newline characters (multi-line search).
-- Written in Vim9script for speed.
+- Command completion works independent of `wildmenu` (you could enable both).
+- Written in Vim9script for readability and ease of maintenance (and speed).
 
 # Requirements
 
@@ -60,7 +69,7 @@ Install using [vim-plug](https://github.com/junegunn/vim-plug)
 ```
 vim9script
 plug#begin()
-Plug 'girishji/search-complete.vim'
+Plug 'girishji/autosuggest.vim'
 plug#end()
 ```
 
@@ -68,7 +77,7 @@ Legacy script:
 
 ```
 call plug#begin()
-Plug 'girishji/search-complete.vim'
+Plug 'girishji/autosuggest.vim'
 call plug#end()
 ```
 
@@ -76,76 +85,61 @@ Or use Vim's builtin package manager.
 
 # Configuration
 
-### Case Sensitive Search
+*Case Sensitive Search*
 
-`ignorecase` and `smartcase` Vim variables are used to decide menu items. Set
-them appropriately using `set` command.
+Set `ignorecase` and `smartcase` using `set` command. See `:h 'ignorecase'` and
+`h 'smartcase'`.
 
 ### Options
 
-There are two types of options that can be configured: 1) options passed directly to Vim's
-[popup_create()](https://vimhelp.org/popup.txt.html#popup_create-arguments)
-function, and 2) options used internally by this plugin. Any option accepted by
-popup_create() is allowed. This includes `borderchars`, `border`, `maxheight`,
-etc. See `:h popup_create-arguments`.
-
-`g:SearchCompleteSetup()` function is used to set options. It takes a dictionary argument.
-If you are using
-[vim-plug](https://github.com/junegunn/vim-plug), use `autocmd` to set options
-(after calling `Plug`).
+Default options are as follows.
 
 ```
 vim9script
-augroup MySearchComplete | autocmd!
-    autocmd WinEnter,BufEnter * g:SearchCompleteSetup({
-                \   borderchars: ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
-                \   flatMenu: false,
-                \ })
+var options = {
+    search: {
+        enable: true,   # 'false' will disable search completion
+        maxheight: 12,	# line count of stacked menu
+        pum: true,	    # 'false' for flat menu, 'true' for stacked menu
+        fuzzy: false,   # fuzzy completion
+    },
+    cmd: {
+        enable: true,   # 'false' will disable command completion
+        pum: true,      # 'false' for flat menu, 'true' for stacked menu
+    }
+}
+```
+
+Options can be modified using g:AutoSuggestSetup().
+
+```
+augroup AutoSuggestGrp | autocmd!
+    autocmd WinEnter,BufEnter * g:AutoSuggestSetup(options)
 augroup END
 ```
 
-Legacy script:
+### Commands
 
-```
-augroup MySearchComplete | autocmd!
-    autocmd WinEnter,BufEnter * call SearchCompleteSetup(#{
-                \   borderchars: ['─', '│', '─', '│', '┌', '┐', '┘', '└'],
-                \   flatMenu: v:false,
-                \ })
-augroup END
-```
+ _Enable and disable this plugin_
 
-Options of interest:
-
-- `maxheight`: Line count of vertical menu, defaults to 12 lines.
-- `border`: To disable border set this to `[0, 0, 0, 0]`.
-- `searchRange`: Lines per search iteration, defaults to 1000 lines.
-- `flatMenu` : 'true' for flat menu, 'false' for normal popup menu. Defaults to true.
-
-### Commands to Enable and Disable Search Completion
-
-- `:SearchCompleteEnable`
-- `:SearchCompleteDisable`
+- `:AutoSuggestEnable`
+- `:AutoSuggestDisable`
 
 
 ### Highlight Groups
 
-Customize the colors to your liking using highlight groups.
-
-- `SearchCompleteMenu`: Menu items in popup menu, linked to `Pmenu`.
-- `SearchCompleteSelect`: Selected item, linked to `PmenuSel`.
-- `SearchCompletePrefix`: Fragment of menu item that matches text being searched, linked to `Statement`.
-- `SearchCompleteSbar`: Vertical menu scroll bar, linked to `PmenuSbar`.
-- `SearchCompleteThumb`: Vertical menu scroll bar thumb, linked to `PmenuThumb`.
-
+Highlight group `AS_SearchCompletePrefix` affects style of the fragment of menu item
+that matches text being searched. By default it is linked to highlight group `Special`.
+Popup menu appearance is determined by Vim's highlight groups `Pmenu`,
+`PmenuSel`, `PmenuSbar` and `PmenuThumb`. 
 
 # Performance
 
-Great care is taken to ensure that responsiveness does not deteriorate when
-searching large files. Large files are searched in batches. Each search
-attempt is limited to 1000 lines (configurable). Reduce this number if you prefer
-faster response. Between each search attempt input keystrokes are allowed to be
-queued into Vim's main loop.
+Care is taken to ensure that responsiveness does not deteriorate when
+searching large files or expanding wildcards. Large files are searched in
+batches. Between each search attempt input keystrokes are allowed to be queued
+into Vim's main loop. Wildcard expansions are first executed in a separate job
+and aborted after a timeout.
 
 # Contributing
 

@@ -17,13 +17,13 @@ ser.Setup()
 cmd.Setup()
 
 def! g:AutoSuggestSetup(opts: dict<any>)
-    var update = (key) => {
+    var Update = (key) => {
 	if opts->has_key(key)
 	    opt.options[key]->extend(opts[key])
 	endif
     }
-    update('search')
-    update('cmd')
+    Update('search')
+    Update('cmd')
 enddef
 
 def AutoSuggestEnable(flag: bool)
