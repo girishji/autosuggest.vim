@@ -26,8 +26,7 @@ __Multiword Search__
 - Type `\n` at the end of the last word in a line to continue to next line.
 - Available only when fuzzy option is not selected.
 
-If you like this plugin, checkout insert-mode tab completion plugin
-([Vimcomplete](https://github.com/girishji/vimcomplete)).
+For insert-mode autocompletion see [Vimcomplete](https://github.com/girishji/vimcomplete).
 
 ### Search
 
