@@ -131,7 +131,8 @@ augroup END
 Highlight group `AS_SearchCompletePrefix` affects style of the fragment of menu item
 that matches text being searched. By default it is linked to highlight group `Special`.
 Popup menu appearance is determined by Vim's highlight groups `Pmenu`,
-`PmenuSel`, `PmenuSbar` and `PmenuThumb`. 
+`PmenuSel`, `PmenuSbar` and `PmenuThumb`. For command completion `WildMenu`
+group (`:h hl-WildMenu`) can be used.
 
 # Performance
 
