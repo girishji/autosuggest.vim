@@ -1,5 +1,7 @@
 vim9script
 
+# Autocomplete Vimscript commands, functions, variables, etc.
+
 import autoload './options.vim' as opt
 
 var options = opt.options.cmd

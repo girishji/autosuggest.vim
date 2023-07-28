@@ -1,5 +1,7 @@
 vim9script
 
+# Autocomplete words in search command
+
 import autoload './options.vim' as opt
 
 var options = opt.options.search
