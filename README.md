@@ -1,4 +1,4 @@
-# AutoSuggest: Autocomplete Plugin for Vim's Cmdline Mode
+#### Autocomplete Plugin for Vim's Cmdline Mode
 
 Wouldn't it be nice to have autocomplete during search and command execution?
 This unobtrusive plugin simply opens a popup menu and shows 
