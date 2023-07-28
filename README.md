@@ -20,6 +20,12 @@ __How to use it?__
 - `<Enter>` accepts selection, and `<Esc>` dismisses search.
 - `<Ctrl-C>` will force popup menu to close.
 
+__Multiword Search__
+
+- Type the character between words (like `<Space>`) after the first word to include the second word in search.
+- Type `\n` at the end of the last word in a line to continue to next line.
+- Available only when fuzzy option is not selected.
+
 If you like this plugin, checkout insert-mode tab completion plugin
 ([Vimcomplete](https://github.com/girishji/vimcomplete)).
 
@@ -39,11 +45,6 @@ If you like this plugin, checkout insert-mode tab completion plugin
 
 [![asciicast](https://asciinema.org/a/HLRW3J95pcQFbuC4Kwttk6Ofo.svg)](https://asciinema.org/a/HLRW3J95pcQFbuC4Kwttk6Ofo)
 
-Note: Multiline Search
-
-- Type the character between words (like `<Space>`) after the first word to include the second word in search.
-- Type `\n` at the end of the last word in a line to continue to next line.
-- Available only when fuzzy option is not selected.
 
 # Features
 

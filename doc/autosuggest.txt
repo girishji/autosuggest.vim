@@ -35,7 +35,7 @@ How to use it?~
 - `<Enter>` accepts selection, and `<Esc>` dismisses search.
 - `<Ctrl-C>` will force popup menu to close.
 
-Multiline Search~
+Multiword Search~
 
 - Type the character between words (like `<Space>`) after the first word to
   include the second word in search.
