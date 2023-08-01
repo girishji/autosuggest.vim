@@ -4,11 +4,12 @@ export var options: dict<any> = {
     search: {
 	enable: true,
 	maxheight: 12,	# line count of stacked menu
-	pum: false,	# 'false' for flat menu, 'true' for stacked menu (for / and ?)
+	pum: true,	# 'false' for flat menu, 'true' for stacked menu (for / and ?)
 	range: 1000,	# line count per search attemp
 	timeout: 100,	# millisec to search, when non-async is specified
 	async: true,	# async search
 	fuzzy: false,   # fuzzy completion
+	overwritestatusline: false, # overwrite and restore statusline (so residual statusline is not visible)
     },
     cmd: {
 	enable: true,
