@@ -29,6 +29,10 @@ enddef
 def AutoSuggestEnable(flag: bool)
     opt.options.search.enable = flag
     opt.options.cmd.enable = flag
+    ser.Teardown()
+    ser.Setup()
+    cmd.Teardown()
+    cmd.Setup()
 enddef
 command! AutoSuggestEnable  AutoSuggestEnable(true)
 command! AutoSuggestDisable AutoSuggestEnable(false)

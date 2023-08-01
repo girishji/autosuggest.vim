@@ -56,7 +56,7 @@ def Init()
     endif
 enddef
 
-def Teardown()
+def Clear()
     ## To fix Vim bug #12634
     completor.winid->popup_move({ pos: 'center' })
     :redraw
@@ -83,9 +83,14 @@ export def Setup()
 	augroup SearchCompleteAutocmds | autocmd!
 	    autocmd CmdlineEnter    /,\?  Init()
 	    autocmd CmdlineChanged  /,\?  Complete()
-	    autocmd CmdlineLeave    /,\?  Teardown()
+	    autocmd CmdlineLeave    /,\?  Clear()
 	augroup END
     endif
+enddef
+
+export def Teardown()
+    augroup SearchCompleteAutocmds | autocmd!
+    augroup END
 enddef
 
 def EnableCmdline()

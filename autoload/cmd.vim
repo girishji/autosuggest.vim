@@ -166,7 +166,7 @@ def Init()
     :set statusline=%<
 enddef
 
-def Teardown()
+def Clear()
     ## fix for Vim bug #12634
     popup_winid->popup_move({ pos: 'center' })
     :redraw
@@ -205,7 +205,12 @@ export def Setup()
 	augroup CmdCompleteAutocmds | autocmd!
 	    autocmd CmdlineEnter   : Init()
 	    autocmd CmdlineChanged : Complete()
-	    autocmd CmdlineLeave   : Teardown()
+	    autocmd CmdlineLeave   : Clear()
 	augroup END
     endif
+enddef
+
+export def Teardown()
+    augroup CmdCompleteAutocmds | autocmd!
+    augroup END
 enddef
