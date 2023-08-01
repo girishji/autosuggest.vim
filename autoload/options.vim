@@ -9,7 +9,7 @@ export var options: dict<any> = {
 	timeout: 100,	# millisec to search, when non-async is specified
 	async: true,	# async search
 	fuzzy: false,   # fuzzy completion
-	overwritestatusline: false, # overwrite and restore statusline (so residual statusline is not visible)
+	hidestatusline: false, # hide statusline (so it is not visible underneath when pum=false)
     },
     cmd: {
 	enable: true,

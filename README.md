@@ -97,6 +97,7 @@ var options = {
         maxheight: 12,	# line count of stacked menu
         pum: true,	    # 'false' for flat menu, 'true' for stacked menu
         fuzzy: false,   # fuzzy completion
+        hidestatusline: false, # (experimental) hide statusline when 'pum' is 'false'
     },
     cmd: {
         enable: true,   # 'false' will disable command completion

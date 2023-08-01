@@ -47,7 +47,7 @@ var ruler: bool
 def Init()
     completor = getcmdtype() == '/' ? NewPopup(true) : NewPopup(false)
     EnableCmdline()
-    if options.overwritestatusline 
+    if options.hidestatusline 
       statusline = &statusline
       showmode = &showmode
       ruler = &ruler
@@ -63,7 +63,7 @@ def Teardown()
     ##
     completor.winid->popup_close()
     completor = {}
-    if options.overwritestatusline 
+    if options.hidestatusline 
       if showmode
         :set showmode
       endif
