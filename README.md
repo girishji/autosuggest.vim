@@ -32,8 +32,6 @@ For insert-mode autocompletion see [Vimcomplete](https://github.com/girishji/vim
 
 [![asciicast](https://asciinema.org/a/dGNdbLbsTMSdaL8E4PonxQDKL.svg)](https://asciinema.org/a/dGNdbLbsTMSdaL8E4PonxQDKL)
 
-[![asciicast](https://asciinema.org/a/vLqdbH0ITj6v6toDTWqyXP0si.svg)](https://asciinema.org/a/vLqdbH0ITj6v6toDTWqyXP0si)
-
 ### Command
 
 [![asciicast](https://asciinema.org/a/eGWd650BZa7uiRi6lv76qYMRG.svg)](https://asciinema.org/a/eGWd650BZa7uiRi6lv76qYMRG)
@@ -41,9 +39,6 @@ For insert-mode autocompletion see [Vimcomplete](https://github.com/girishji/vim
 ### Popup Menu over Statusline
 
 [![asciicast](https://asciinema.org/a/DrvlJnoumCA9jWuMH8WGBCVJz.svg)](https://asciinema.org/a/DrvlJnoumCA9jWuMH8WGBCVJz)
-
-[![asciicast](https://asciinema.org/a/HLRW3J95pcQFbuC4Kwttk6Ofo.svg)](https://asciinema.org/a/HLRW3J95pcQFbuC4Kwttk6Ofo)
-
 
 # Features
 
