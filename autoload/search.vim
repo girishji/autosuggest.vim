@@ -78,13 +78,19 @@ def Complete()
     completor.completeWord()
 enddef
 
+def TabComplete()
+    var lastcharpos = getcmdpos() - 2
+    if getcmdline()[lastcharpos] ==? "\<tab>"
+	setcmdline(getcmdline()->slice(0, lastcharpos))
+	completor.completeWord()
+    endif
+enddef
+
 export def Setup()
     if options.enable
 	augroup SearchCompleteAutocmds | autocmd!
 	    autocmd CmdlineEnter    /,\?  Init()
-	    if options.alwayson
-		autocmd CmdlineChanged  /,\?  Complete()
-	    endif
+	    autocmd CmdlineChanged  /,\?  options.alwayson ? Complete() : TabComplete()
 	    autocmd CmdlineLeave    /,\?  Clear()
 	augroup END
     endif
@@ -96,9 +102,7 @@ export def Teardown()
 enddef
 
 def EnableCmdline()
-    if options.alwayson
-	autocmd! SearchCompleteAutocmds CmdlineChanged /,\? Complete()
-    endif
+    autocmd! SearchCompleteAutocmds CmdlineChanged /,\? options.alwayson ? Complete() : TabComplete()
 enddef
 
 def DisableCmdline()
