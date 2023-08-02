@@ -47,7 +47,7 @@ var ruler: bool
 def Init()
     completor = getcmdtype() == '/' ? NewPopup(true) : NewPopup(false)
     EnableCmdline()
-    if options.hidestatusline 
+    if options.hidestatusline
       statusline = &statusline
       showmode = &showmode
       ruler = &ruler
@@ -63,7 +63,7 @@ def Clear()
     ##
     completor.winid->popup_close()
     completor = {}
-    if options.hidestatusline 
+    if options.hidestatusline
       if showmode
         :set showmode
       endif
@@ -82,7 +82,9 @@ export def Setup()
     if options.enable
 	augroup SearchCompleteAutocmds | autocmd!
 	    autocmd CmdlineEnter    /,\?  Init()
-	    autocmd CmdlineChanged  /,\?  Complete()
+	    if options.alwayson
+		autocmd CmdlineChanged  /,\?  Complete()
+	    endif
 	    autocmd CmdlineLeave    /,\?  Clear()
 	augroup END
     endif
@@ -94,7 +96,9 @@ export def Teardown()
 enddef
 
 def EnableCmdline()
-    autocmd! SearchCompleteAutocmds CmdlineChanged /,\? Complete()
+    if options.alwayson
+	autocmd! SearchCompleteAutocmds CmdlineChanged /,\? Complete()
+    endif
 enddef
 
 def DisableCmdline()
@@ -110,7 +114,7 @@ def SearchIntervals(fwd: bool, range: number): list<any>
     while firstsearch || stopline != (fwd ? line('$') : 1)
 	var startline = firstsearch ? line('.') : stopline
 	stopline = fwd ? min([startline + range, line('$')]) : max([startline - range, 1])
-	intervals->add({startl: startline + (firstsearch ? 0 : fwd ? -5 : 5), 
+	intervals->add({startl: startline + (firstsearch ? 0 : fwd ? -5 : 5),
 	    startc: firstsearch ? col('.') : 1, stopl: stopline})
 	firstsearch = false
     endwhile
@@ -242,7 +246,7 @@ def ShowPopupMenu(popup: dict<any>)
     p.index = -1
     p.winid->popup_setoptions({cursorline: false})
     clearmatches(p.winid)
-    var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}' 
+    var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}'
     matchadd('AS_SearchCompletePrefix', mpat, 10, -1, {window: p.winid})
     p.winid->popup_show()
     if !&incsearch # redraw only when noincsearch, otherwise highlight flickers
@@ -378,13 +382,13 @@ def SelectItem(popup: dict<any>, direction: string)
 			else
 			    selected->insert(p.keywords[idx])
 			endif
-		    else 
+		    else
 			idx -= (atleft ? 1 : -1)
 			break
 		    endif
 		endwhile
 		if atleft
-		    overflowr = idx < p.keywords->len() - 1 
+		    overflowr = idx < p.keywords->len() - 1
 		else
 		    overflowl = idx > 0
 		endif
@@ -393,13 +397,13 @@ def SelectItem(popup: dict<any>, direction: string)
 	    var hmenu = ''
 	    if direction ==# 'j'
 		hmenu = rotate ? HMenuStr(0, 'left') : HMenuStr(p.index, 'right')
-	    else 
+	    else
 		hmenu = rotate ? HMenuStr(p.keywords->len() - 1, 'right') : HMenuStr(p.index, 'left')
 	    endif
 	    hmenu->setbufline(p.winid->winbufnr(), 1)
 	endif
 	clearmatches(p.winid)
-	var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}' 
+	var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}'
 	matchadd('AS_SearchCompletePrefix', mpat, 10, -1, {window: p.winid})
 	matchadd('PMenuSel', kwordpat, 11, -1, {window: p.winid})
     enddef
@@ -470,9 +474,9 @@ def CompleteWord(popup: dict<any>)
 	    },
 	}
 	if options.pum
-	    attr->extend({ minwidth: 14 }) 
+	    attr->extend({ minwidth: 14 })
 	else
-	    attr->extend({ scrollbar: 0, padding: [0, 0, 0, 0], highlight: 'statusline' }) 
+	    attr->extend({ scrollbar: 0, padding: [0, 0, 0, 0], highlight: 'statusline' })
 	endif
 	p.winid = popup_menu([], attr)
     endif

@@ -109,9 +109,7 @@ var options = {
 Options can be modified using g:AutoSuggestSetup().
 
 ```
-augroup AutoSuggestGrp | autocmd!
-    autocmd WinEnter,BufEnter * g:AutoSuggestSetup(options)
-augroup END
+autocmd VimEnter * g:AutoSuggestSetup(options)
 ```
 
 ### Commands

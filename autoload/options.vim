@@ -10,6 +10,7 @@ export var options: dict<any> = {
 	async: true,	# async search
 	fuzzy: false,   # fuzzy completion
 	hidestatusline: false, # hide statusline (so it is not visible underneath when pum=false)
+	alwayson: true, # when 'false' press <tab> to open popup menu
     },
     cmd: {
 	enable: true,
