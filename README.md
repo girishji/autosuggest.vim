@@ -80,11 +80,6 @@ Or use Vim's builtin package manager.
 
 # Configuration
 
-*Case Sensitive Search*
-
-Set `ignorecase` and `smartcase` using `set` command. See `:h 'ignorecase'` and
-`h 'smartcase'`.
-
 ### Options
 
 Default options are as follows.
@@ -98,6 +93,7 @@ var options = {
         pum: true,	    # 'false' for flat menu, 'true' for stacked menu
         fuzzy: false,   # fuzzy completion
         hidestatusline: false, # (experimental) hide statusline when 'pum' is 'false'
+        alwayson: true, # when 'false' press <tab> to open popup menu
     },
     cmd: {
         enable: true,   # 'false' will disable command completion
@@ -127,6 +123,11 @@ that matches text being searched. By default it is linked to highlight group `Sp
 Popup menu appearance is determined by Vim's highlight groups `Pmenu`,
 `PmenuSel`, `PmenuSbar` and `PmenuThumb`. For command completion `WildMenu`
 group (`:h hl-WildMenu`) can be used.
+
+### Case Sensitive Search
+
+Set `ignorecase` and `smartcase` using `set` command. See `:h 'ignorecase'` and
+`h 'smartcase'`.
 
 # Performance
 
