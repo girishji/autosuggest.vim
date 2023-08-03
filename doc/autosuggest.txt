@@ -66,7 +66,7 @@ Multiword Search~
 ==============================================================================
 4. Installation					*autosuggest-installation*
 
-Install using [vim-plug](https://github.com/junegunn/vim-plug)
+Install using vim-plug (https://github.com/junegunn/vim-plug)
 
 >
 	vim9script
@@ -112,7 +112,9 @@ Default options are as follows.
 	    }
 	}
 
-Options can be modified using `g:AutoSuggestSetup()`.
+Options can be modified using `g:AutoSuggestSetup()`. If you are using
+vim-plug (https://github.com/junegunn/vim-plug), use the `VimEnter` event as
+follows.
 >
 	autocmd VimEnter * g:AutoSuggestSetup(options)
 
