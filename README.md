@@ -50,7 +50,6 @@ For insert-mode autocompletion see [Vimcomplete](https://github.com/girishji/vim
 - Will not hang under any circumstance (including `**` wildcards)
 - Command names, arguments, Vimscript functions, variables, etc., are autocompleted.
 - Switch between normal popup menu and flat menu.
-- Command completion works independent of `wildmenu` (you could enable both).
 - Written in Vim9script for readability and ease of maintenance (and speed).
 
 # Requirements

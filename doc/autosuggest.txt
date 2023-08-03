@@ -55,7 +55,6 @@ Multiword Search~
 - Command names, arguments, Vimscript functions, variables, etc., are
   autocompleted.
 - Switch between normal popup menu and flat menu.
-- Command completion works independent of `wildmenu` (you could enable both).
 - Written in Vim9script for readability and ease of maintenance (and speed).
 
 ==============================================================================
