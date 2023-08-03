@@ -98,6 +98,7 @@ var options = {
         enable: true,   # 'false' will disable command completion
         pum: true,      # 'false' for flat menu, 'true' for stacked menu
         fuzzy: false,   # fuzzy completion
+        hidestatusline: false, # (experimental) hide statusline when 'pum' is 'false'
     }
 }
 ```
