@@ -16,6 +16,7 @@ export var options: dict<any> = {
 	enable: true,
 	delay: 10,      # delay before showing popup
 	pum: true,      # 'false' for flat menu, 'true' for stacked menu
+	fuzzy: false,   # fuzzy completion
     }
 }
 

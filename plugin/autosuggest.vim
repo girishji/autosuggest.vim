@@ -13,7 +13,14 @@ import autoload '../autoload/options.vim' as opt
 import autoload '../autoload/search.vim' as ser
 import autoload '../autoload/cmd.vim'
 
-autocmd VimEnter * ser.Setup() | cmd.Setup()
+def Reset()
+    ser.Teardown()
+    ser.Setup()
+    cmd.Teardown()
+    cmd.Setup()
+enddef
+
+autocmd VimEnter * Reset()
 
 def! g:AutoSuggestSetup(opts: dict<any>)
     var Update = (key) => {
@@ -23,19 +30,13 @@ def! g:AutoSuggestSetup(opts: dict<any>)
     }
     Update('search')
     Update('cmd')
-    ser.Teardown()
-    ser.Setup()
-    cmd.Teardown()
-    cmd.Setup()
+    Reset()
 enddef
 
 def AutoSuggestEnable(flag: bool)
     opt.options.search.enable = flag
     opt.options.cmd.enable = flag
-    ser.Teardown()
-    ser.Setup()
-    cmd.Teardown()
-    cmd.Setup()
+    Reset()
 enddef
 command! AutoSuggestEnable  AutoSuggestEnable(true)
 command! AutoSuggestDisable AutoSuggestEnable(false)

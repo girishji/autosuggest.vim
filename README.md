@@ -98,6 +98,7 @@ var options = {
     cmd: {
         enable: true,   # 'false' will disable command completion
         pum: true,      # 'false' for flat menu, 'true' for stacked menu
+        fuzzy: false,   # fuzzy completion
     }
 }
 ```

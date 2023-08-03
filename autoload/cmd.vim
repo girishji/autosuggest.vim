@@ -192,11 +192,27 @@ def Complete()
     Completable(context)
 enddef
 
+var wildsave = {
+    saved: false,
+    wildmode: '',
+    wildoptions: '',
+}
+
 export def Setup()
     if options.enable
+	if !wildsave.saved
+	    wildsave.saved = true
+	    wildsave.wildmode = &wildmode
+	    wildsave.wildoptions = &wildoptions
+	endif
 	:set wildchar=<Tab>
 	:set wildmenu
 	:set wildmode=full
+	if  options.fuzzy
+	    :set wildoptions+=fuzzy
+	else
+	    :set wildoptions-=fuzzy
+	endif
 	if options.pum
 	    :set wildoptions+=pum
 	else
@@ -211,6 +227,10 @@ export def Setup()
 enddef
 
 export def Teardown()
+    if wildsave.saved
+	exec $'set wildmode={wildsave.wildmode}'
+	exec $'set wildoptions={wildsave.wildoptions}'
+    endif
     augroup CmdCompleteAutocmds | autocmd!
     augroup END
 enddef

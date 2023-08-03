@@ -48,11 +48,11 @@ def Init()
     completor = getcmdtype() == '/' ? NewPopup(true) : NewPopup(false)
     EnableCmdline()
     if options.hidestatusline
-      statusline = &statusline
-      showmode = &showmode
-      ruler = &ruler
-      :set noshowmode noruler
-      :set statusline=%<
+	statusline = &statusline
+	showmode = &showmode
+	ruler = &ruler
+	:set noshowmode noruler
+	:set statusline=%<
     endif
 enddef
 
@@ -64,13 +64,13 @@ def Clear()
     completor.winid->popup_close()
     completor = {}
     if options.hidestatusline
-      if showmode
-        :set showmode
-      endif
-      if ruler
-        :set ruler
-      endif
-      exec $'set statusline={statusline}'
+	if showmode
+	    :set showmode
+	endif
+	if ruler
+	    :set ruler
+	endif
+	exec $'set statusline={statusline}'
     endif
 enddef
 
