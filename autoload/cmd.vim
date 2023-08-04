@@ -151,19 +151,11 @@ def Completable(context: string)
     timer_start(delay, function(DoComplete, [context]))
 enddef
 
-var statusline: string
-var showmode: bool
-var ruler: bool
-
 def Init()
     PopupCreate()
     CmdlineEnable()
     if options.hidestatusline
-	statusline = &statusline
-	showmode = &showmode
-	ruler = &ruler
-	:set noshowmode noruler
-	:set statusline=%<
+	opt.SaveStatusLine()
     endif
 enddef
 
@@ -173,15 +165,7 @@ def Clear()
     :redraw
     ##
     popup_winid->popup_close()
-    if options.hidestatusline
-	if showmode
-	    :set showmode
-	endif
-	if ruler
-	    :set ruler
-	endif
-	exec $'set statusline={statusline}'
-    endif
+    opt.RestoreStatusLine()
 enddef
 
 def Complete()
@@ -237,3 +221,5 @@ export def Teardown()
     augroup CmdCompleteAutocmds | autocmd!
     augroup END
 enddef
+
+# vim: tabstop=8 shiftwidth=4 softtabstop=4

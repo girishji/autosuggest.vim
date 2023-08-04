@@ -40,19 +40,11 @@ enddef
 
 var completor = {}
 
-var statusline: string
-var showmode: bool
-var ruler: bool
-
 def Init()
     completor = getcmdtype() == '/' ? NewPopup(true) : NewPopup(false)
     EnableCmdline()
     if options.hidestatusline
-	statusline = &statusline
-	showmode = &showmode
-	ruler = &ruler
-	:set noshowmode noruler
-	:set statusline=%<
+	opt.SaveStatusLine()
     endif
 enddef
 
@@ -63,15 +55,7 @@ def Clear()
     ##
     completor.winid->popup_close()
     completor = {}
-    if options.hidestatusline
-	if showmode
-	    :set showmode
-	endif
-	if ruler
-	    :set ruler
-	endif
-	exec $'set statusline={statusline}'
-    endif
+    opt.RestoreStatusLine()
 enddef
 
 def Complete()
@@ -486,3 +470,5 @@ def CompleteWord(popup: dict<any>)
     endif
     p.updateMenu('')
 enddef
+
+# vim: tabstop=8 shiftwidth=4 softtabstop=4

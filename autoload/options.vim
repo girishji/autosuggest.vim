@@ -28,3 +28,34 @@ endif
 if options.search.fuzzy
     options.search.async = false
 endif
+
+var slsave = {
+    saved: false,
+    statusline: '',
+    showmode: false,
+    ruler: false,
+}
+
+export def SaveStatusLine()
+    slsave.saved = true
+    slsave.statusline = &statusline
+    slsave.showmode = &showmode
+    slsave.ruler = &ruler
+    :set noshowmode noruler
+    :set statusline=%<
+enddef
+
+export def RestoreStatusLine()
+    if slsave.saved
+	slsave.saved = false
+	if slsave.showmode
+	    :set showmode
+	endif
+	if slsave.ruler
+	    :set ruler
+	endif
+	exec $'set statusline={slsave.statusline}'
+    endif
+enddef
+
+# vim: tabstop=8 shiftwidth=4 softtabstop=4

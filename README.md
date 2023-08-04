@@ -103,8 +103,8 @@ var options = {
 }
 ```
 
-Options can be modified using g:AutoSuggestSetup(). If you are using
-[vim-plug](https://github.com/junegunn/vim-plug), use the `VimEnter` event as
+Options can be modified using `g:AutoSuggestSetup()`. If you are using
+[vim-plug](https://github.com/junegunn/vim-plug) use the `VimEnter` event as
 follows.
 
 ```

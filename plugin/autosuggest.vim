@@ -42,3 +42,5 @@ command! AutoSuggestEnable  AutoSuggestEnable(true)
 command! AutoSuggestDisable AutoSuggestEnable(false)
 
 highlight default link AS_SearchCompletePrefix    Special
+
+# vim: tabstop=8 shiftwidth=4 softtabstop=4
