@@ -158,13 +158,13 @@ var ruler: bool
 def Init()
     PopupCreate()
     CmdlineEnable()
-	if options.hidestatusline
-    	statusline = &statusline
-    	showmode = &showmode
-    	ruler = &ruler
-    	:set noshowmode noruler
-    	:set statusline=%<
-	endif
+    if options.hidestatusline
+	statusline = &statusline
+	showmode = &showmode
+	ruler = &ruler
+	:set noshowmode noruler
+	:set statusline=%<
+    endif
 enddef
 
 def Clear()
@@ -173,15 +173,15 @@ def Clear()
     :redraw
     ##
     popup_winid->popup_close()
-	if options.hidestatusline
-		if showmode
-		:set showmode
-		endif
-		if ruler
-		:set ruler
-		endif
-		exec $'set statusline={statusline}'
+    if options.hidestatusline
+	if showmode
+	    :set showmode
 	endif
+	if ruler
+	    :set ruler
+	endif
+	exec $'set statusline={statusline}'
+    endif
 enddef
 
 def Complete()
