@@ -217,6 +217,7 @@ export def Teardown()
     if wildsave.saved
 	exec $'set wildmode={wildsave.wildmode}'
 	exec $'set wildoptions={wildsave.wildoptions}'
+	wildsave.saved = false
     endif
     augroup CmdCompleteAutocmds | autocmd!
     augroup END
