@@ -99,6 +99,7 @@ var options = {
         pum: true,      # 'false' for flat menu, 'true' for stacked menu
         fuzzy: false,   # fuzzy completion
         hidestatusline: false, # (experimental) hide statusline when 'pum' is 'false'
+        exclude: [],    # excluded keywords for completion (use \c for ignorecase)
     }
 }
 ```

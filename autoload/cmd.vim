@@ -131,6 +131,11 @@ def DoComplete(oldcontext: string, timer: number)
 	# Likely pasted text or coming from keymap
 	return
     endif
+    for pat in options.exclude
+	if context =~ pat
+	    return
+	endif
+    endfor
     var completions: list<any> = []
     if Verify(context)
 	completions = context->getcompletion('cmdline')

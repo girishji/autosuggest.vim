@@ -18,6 +18,7 @@ export var options: dict<any> = {
 	pum: true,      # 'false' for flat menu, 'true' for stacked menu
 	fuzzy: false,   # fuzzy completion
 	hidestatusline: false, # hide statusline (so it is not visible underneath when pum=false)
+	exclude: [],    # excluded keywords for completion (use \c for ignorecase)
     }
 }
 
