@@ -133,6 +133,42 @@ group (`:h hl-WildMenu`) can be used.
 Set `ignorecase` and `smartcase` using `set` command. See `:h 'ignorecase'` and
 `h 'smartcase'`.
 
+# Key Mapping
+
+If you defined a keymap that puts text on the command line or waits for input,
+you may find that the command line may get cleared by the popup. This
+undesirable outcome can be prevented by one of two methods: specify keywords
+that should be ignored by the autocompletion mechanism, or disable and enable
+the plugin within the keymap.
+
+For instance, let's say you have a keymap as follows. First command lists
+buffers and second one chooses.
+
+```
+nnoremap <leader>b :buffers<cr>:buffer<space>
+```
+
+This will not work because the second `buffer` command is just text on the
+command line. It causes the popup to open and clear the output of previous
+`buffers` command.
+
+First solution is to simply exclude the word `buffer` from autocompletion.
+Include this in your options.
+
+```
+var options = {
+    cmd: {
+        exclude: ['buffer']
+    }
+}
+```
+
+Another solution is to disable and enable.
+
+```
+:nnoremap <leader>b :AutoSuggestDisable<cr>:buffers<cr>:let nr = input("Which one: ")<Bar>exe $'buffer {nr}'<bar>AutoSuggestEnable<cr>
+```
+
 # Performance
 
 Care is taken to ensure that responsiveness does not deteriorate when
