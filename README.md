@@ -88,8 +88,8 @@ vim9script
 var options = {
     search: {
         enable: true,   # 'false' will disable search completion
-        maxheight: 12,	# line count of stacked menu
-        pum: true,	    # 'false' for flat menu, 'true' for stacked menu
+        maxheight: 12,  # line count of stacked menu
+        pum: true,      # 'false' for flat menu, 'true' for stacked menu
         fuzzy: false,   # fuzzy completion
         alwayson: true, # when 'false' press <tab> to open popup menu
         hidestatusline: false, # (experimental) hide statusline when 'pum' is 'false'
