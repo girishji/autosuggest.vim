@@ -127,7 +127,7 @@ def BufMatches(popup: dict<any>, interval: dict<any>): list<any>
 	    p.firstmatch = [lnum, cnum, p.context->len()]
 	endif
     endif
-    var pattern = $'\k*{p.context}\k*'
+    var pattern = p.context =~ '\s' ? $'{p.context}\k*' : $'\k*{p.context}\k*'
     var [lnum, cnum] = [0, 0]
     var [startl, startc] = [0, 0]
     if p.async
@@ -286,7 +286,8 @@ enddef
 def UpdateMenu(popup: dict<any>, key: string)
     var p = popup
     var context = getcmdline()->strpart(0, getcmdpos() - 1) .. key
-    if context == '' || context =~ '^\s\+$'
+    # https://github.com/girishji/autosuggest.vim/issues/2: `\` causes errors in searchpos()
+    if context == '' || context =~ '^\s\+$' || context =~ '\'
 	return
     endif
     p.context = context

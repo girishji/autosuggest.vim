@@ -146,11 +146,6 @@ def DoComplete(oldcontext: string, timer: number)
     PopupShow(pos, completions)
 enddef
 
-def Completable(context: string)
-    var delay = max([10, options.delay])
-    timer_start(delay, function(DoComplete, [context]))
-enddef
-
 def Init()
     PopupCreate()
     CmdlineEnable()
@@ -176,7 +171,8 @@ def Complete()
     if context == '' || context =~ '^\s\+$' || context[-1] =~ '\s'
 	return
     endif
-    Completable(context)
+    var delay = max([10, options.delay])
+    timer_start(delay, function(DoComplete, [context]))
 enddef
 
 var wildsave = {
