@@ -77,13 +77,18 @@ def Overlap(context: string, completion: string): list<number>
     return [-1, -1]
 enddef
 
-# Completion candidates for file are obtained as full path. Extract relevant
-# portion of path for display.
 # Retrun the column nr where popup menu should be displayed. Relevant only for
 # stacked popup menu (not flat menu).
+# Completion candidates for file are obtained as full path. Extract relevant
+# portion of path for display.
 def ExtractShowable(context: string, completions: list<any>): number
-    var compl = completions[0]
-    if isdirectory(expand(compl)) || filereadable(expand(compl))
+    var fpath: string = ''
+    try
+	# <spath> throws error E1245
+	fpath = expand(completions[0])
+    catch /^Vim\%((\a\+)\)\=:E/	 # catch all Vim errors
+    endtry
+    if !fpath->empty() && (isdirectory(fpath) || filereadable(fpath))
 	if context =~ '\\ '
 	    completions->map((_, v) => v->escape(' '))
 	endif
