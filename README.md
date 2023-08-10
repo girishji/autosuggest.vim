@@ -92,13 +92,11 @@ var options = {
         pum: true,      # 'false' for flat menu, 'true' for stacked menu
         fuzzy: false,   # fuzzy completion
         alwayson: true, # when 'false' press <tab> to open popup menu
-        hidestatusline: false, # (experimental) hide statusline when 'pum' is 'false'
     },
     cmd: {
         enable: true,   # 'false' will disable command completion
         pum: true,      # 'false' for flat menu, 'true' for stacked menu
         fuzzy: false,   # fuzzy completion
-        hidestatusline: false, # (experimental) hide statusline when 'pum' is 'false'
         exclude: [],    # keywords excluded from completion (use \c for ignorecase)
     }
 }

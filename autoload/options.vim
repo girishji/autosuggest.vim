@@ -22,6 +22,8 @@ export var options: dict<any> = {
     }
 }
 
+# XXX: hidestatusline (saving statusline) interferes with Quickfix list traversal (:cnext)
+
 if options.search.range < 10
     options.search.range = 10
 endif
