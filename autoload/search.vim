@@ -43,7 +43,7 @@ var completor = {}
 def Init()
     completor = getcmdtype() == '/' ? NewPopup(true) : NewPopup(false)
     EnableCmdline()
-    if options.hidestatusline
+    if !options.pum && options.hidestatusline
 	opt.SaveStatusLine()
     endif
 enddef

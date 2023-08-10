@@ -159,7 +159,7 @@ enddef
 def Init()
     PopupCreate()
     CmdlineEnable()
-    if options.hidestatusline
+    if !options.pum && options.hidestatusline
 	opt.SaveStatusLine()
     endif
 enddef
