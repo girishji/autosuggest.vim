@@ -19,6 +19,7 @@ export var options: dict<any> = {
 	fuzzy: false,   # fuzzy completion
 	hidestatusline: false, # hide statusline (so it is not visible underneath when pum=false)
 	exclude: [],    # keywords excluded from completion (use \c for ignorecase)
+	onspace: [],    # show menu for keyword+space (ex. :find , :buffer , etc.)
     }
 }
 

@@ -118,7 +118,7 @@ def Verify(context: string): bool
     while start->reltime()->reltimefloat() * 1000 < Timeout
 	if vjob->job_status() ==? 'run'
 	    :sleep 5m
-	else 
+	else
 	    break
 	endif
     endwhile
@@ -178,7 +178,8 @@ def Complete()
 	return
     endif
     var context = getcmdline()->strpart(0, getcmdpos() - 1)
-    if context == '' || context =~ '^\s\+$' || context[-1] =~ '\s'
+    if context == '' || context =~ '^\s\+$' ||
+	    (options.onspace->index(context->trim()) == -1 && context[-1] =~ '\s')
 	return
     endif
     var delay = max([10, options.delay])
