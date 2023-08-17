@@ -110,6 +110,7 @@ Default options are as follows.
 	        pum: true,      # 'false' for flat menu, 'true' for stacked menu
 	        fuzzy: false,   # fuzzy completion
 	        exclude: [],    # keywords excluded from completion (use \c for ignorecase)
+	        onspace: [],    # show popup menu after keyword+space (ex. :buffer<space>, etc.)
 	    }
 	}
 
@@ -173,6 +174,17 @@ Include this in your options.
 Another solution is to disable and enable.
 >
 	:nnoremap <leader>b :AutoSuggestDisable<cr>:buffers<cr>:let nr = input("Which one: ")<Bar>exe $'buffer {nr}'<bar>AutoSuggestEnable<cr>
+
+You can define some interesting keymappings with the help of this plugin. Here
+are two examples. First one will help you open file under current working
+directory. Second mapping switches buffers. Use `<tab` to choose from menu.
+>
+ 	nnoremap <leader><space> :e<space>**/*<left>
+ 	nnoremap <leader><bs> :buffer<space>
+
+	# Set the following option
+	autocmd VimEnter * g:AutoSuggestSetup({ cmd: { onspace: ['buffer'] }})
+
 
 ==============================================================================
 
