@@ -1,4 +1,4 @@
-#### Autocomplete Plugin for Vim's Cmdline Mode (Needs Vim >= 9.0)
+### Autocomplete Plugin for Vim's Cmdline Mode (Needs Vim >= 9.0)
 
 Wouldn't it be nice to have autocomplete during search and command execution?
 This unobtrusive plugin simply opens a popup menu and shows 
