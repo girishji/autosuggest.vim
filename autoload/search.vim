@@ -9,31 +9,31 @@ var options = opt.options.search
 # Encapsulate the state and operations of search menu completion.
 def NewPopup(isfwd: bool): dict<any>
     var popup = {
-	winid: -1,	    # id of popup window
-	keywords: [],	    # keywords shown in popup menu
-	candidates: [],	    # candidates for completion (could be phrases)
-	index: 0,	    # index to keywords and candidates array
-	context: '',	    # cached cmdline contents
-	isfwd: isfwd,	    # true for '/' and false for '?'
-	starttime: [],	    # timestamp at which search started
-	firstmatch: [],	    # workaround for vim bug 12538
+        winid: -1,	    # id of popup window
+        keywords: [],	    # keywords shown in popup menu
+        candidates: [],	    # candidates for completion (could be phrases)
+        index: 0,	    # index to keywords and candidates array
+        context: '',	    # cached cmdline contents
+        isfwd: isfwd,	    # true for '/' and false for '?'
+        starttime: [],	    # timestamp at which search started
+        firstmatch: [],	    # workaround for vim bug 12538
     }
     popup->extend({
-	completeWord: function(CompleteWord, [popup]),
-	selectItem: function(SelectItem, [popup]),
-	updateMenu: function(UpdateMenu, [popup]),
-	bufMatches: function(BufMatches, [popup]),
-	bufFuzzyMatches: function(BufFuzzyMatches, [popup]),
-	showPopupMenu: function(ShowPopupMenu, [popup]),
+        completeWord: function(CompleteWord, [popup]),
+        selectItem: function(SelectItem, [popup]),
+        updateMenu: function(UpdateMenu, [popup]),
+        bufMatches: function(BufMatches, [popup]),
+        bufFuzzyMatches: function(BufFuzzyMatches, [popup]),
+        showPopupMenu: function(ShowPopupMenu, [popup]),
     })
     # Due to vim bug 12538 highlighting has to be provoked explicitly during
     # async search. The redraw command causes some flickering of highlighted
     # text. So do async search only when file is large.
     if options.async
-	popup->extend({async: (line('$') < options.range ? false : true)})
-	options.timeout = 2000
+        popup->extend({async: (line('$') < options.range ? false : true)})
+        options.timeout = 2000
     else
-	popup->extend({async: false})
+        popup->extend({async: false})
     endif
     return popup
 enddef
@@ -44,7 +44,7 @@ def Init()
     completor = getcmdtype() == '/' ? NewPopup(true) : NewPopup(false)
     EnableCmdline()
     if !options.pum && options.hidestatusline
-	opt.SaveStatusLine()
+        opt.SaveStatusLine()
     endif
 enddef
 
@@ -65,18 +65,18 @@ enddef
 def TabComplete()
     var lastcharpos = getcmdpos() - 2
     if getcmdline()[lastcharpos] ==? "\<tab>"
-	setcmdline(getcmdline()->slice(0, lastcharpos))
-	completor.completeWord()
+        setcmdline(getcmdline()->slice(0, lastcharpos))
+        completor.completeWord()
     endif
 enddef
 
 export def Setup()
     if options.enable
-	augroup SearchCompleteAutocmds | autocmd!
-	    autocmd CmdlineEnter    /,\?  Init()
-	    autocmd CmdlineChanged  /,\?  options.alwayson ? Complete() : TabComplete()
-	    autocmd CmdlineLeave    /,\?  Clear()
-	augroup END
+        augroup SearchCompleteAutocmds | autocmd!
+            autocmd CmdlineEnter    /,\?  Init()
+            autocmd CmdlineChanged  /,\?  options.alwayson ? Complete() : TabComplete()
+            autocmd CmdlineLeave    /,\?  Clear()
+        augroup END
     endif
 enddef
 
@@ -100,18 +100,18 @@ def SearchIntervals(fwd: bool, range: number): list<any>
     var stopline = 0
     #  Note: startl <- start line, startc <- start column, etc.
     while firstsearch || stopline != (fwd ? line('$') : 1)
-	var startline = firstsearch ? line('.') : stopline
-	stopline = fwd ? min([startline + range, line('$')]) : max([startline - range, 1])
-	intervals->add({startl: startline + (firstsearch ? 0 : fwd ? -5 : 5),
-	    startc: firstsearch ? col('.') : 1, stopl: stopline})
-	firstsearch = false
+        var startline = firstsearch ? line('.') : stopline
+        stopline = fwd ? min([startline + range, line('$')]) : max([startline - range, 1])
+        intervals->add({startl: startline + (firstsearch ? 0 : fwd ? -5 : 5),
+            startc: firstsearch ? col('.') : 1, stopl: stopline})
+        firstsearch = false
     endwhile
     firstsearch = true
     while firstsearch || stopline != line('.')
-	var startline = firstsearch ? fwd ? 1 : line('$') : stopline
-	stopline = fwd ? min([startline + range, line('.')]) : max([startline - range, line('.')])
-	intervals->add({startl: startline + (firstsearch ? 0 : fwd ? -5 : 5), startc: 1, stopl: stopline})
-	firstsearch = false
+        var startline = firstsearch ? fwd ? 1 : line('$') : stopline
+        stopline = fwd ? min([startline + range, line('.')]) : max([startline - range, line('.')])
+        intervals->add({startl: startline + (firstsearch ? 0 : fwd ? -5 : 5), startc: 1, stopl: stopline})
+        firstsearch = false
     endwhile
     return intervals
 enddef
@@ -122,50 +122,55 @@ def BufMatches(popup: dict<any>, interval: dict<any>): list<any>
     var p = popup
     var flags = p.async ? (p.isfwd ? '' : 'b') : (p.isfwd ? 'w' : 'wb')
     if p.async && p.firstmatch == [] # find first match to highlight (vim bug 12538)
-	var [lnum, cnum] = p.context->searchpos(flags, interval.stopl)
-	if [lnum, cnum] != [0, 0]
-	    p.firstmatch = [lnum, cnum, p.context->len()]
-	endif
+        var [lnum, cnum] = p.context->searchpos(flags, interval.stopl)
+        if [lnum, cnum] != [0, 0]
+            p.firstmatch = [lnum, cnum, p.context->len()]
+        endif
     endif
     var pattern = p.context =~ '\s' ? $'{p.context}\k*' : $'\k*{p.context}\k*'
     var [lnum, cnum] = [0, 0]
     var [startl, startc] = [0, 0]
-    if p.async
-	[lnum, cnum] = pattern->searchpos(flags, interval.stopl)
-    else
-	[lnum, cnum] = pattern->searchpos(flags, 0, options.timeout)
-	[startl, startc] = [lnum, cnum]
-    endif
+    try
+        if p.async
+            [lnum, cnum] = pattern->searchpos(flags, interval.stopl)
+        else
+            [lnum, cnum] = pattern->searchpos(flags, 0, options.timeout)
+            [startl, startc] = [lnum, cnum]
+        endif
+    catch # '*' with magic can throw E871
+        # echom v:exception
+        return []
+    endtry
 
     var matches = []
     var found = {}
     for item in p.candidates
-	found[item] = 1
+        found[item] = 1
     endfor
     var starttime = p.starttime
     var timeout = options.timeout
     while [lnum, cnum] != [0, 0]
-	var [endl, endc] = pattern->searchpos('ceW') # end of matching string
-	var lines = getline(lnum, endl)
-	var mstr = '' # fragment that matches pattern (can be multiline)
-	if lines->len() == 1
-	    mstr = lines[0]->strpart(cnum - 1, endc - cnum + 1)
-	else
-	    var mlist = [lines[0]->strpart(cnum - 1)] + lines[1 : -2] + [lines[-1]->strpart(0, endc)]
-	    mstr = mlist->join('\n')
-	endif
-	if mstr != p.context && !found->has_key(mstr)
-	    found[mstr] = 1
-	    matches->add(mstr)
-	endif
-	cursor(lnum, cnum) # restore cursor to beginning of pattern, otherwise '?' does not work
-	[lnum, cnum] = p.async ? pattern->searchpos(flags, interval.stopl) :
-	    pattern->searchpos(flags, 0, timeout)
+        var [endl, endc] = pattern->searchpos('ceW') # end of matching string
+        var lines = getline(lnum, endl)
+        var mstr = '' # fragment that matches pattern (can be multiline)
+        if lines->len() == 1
+            mstr = lines[0]->strpart(cnum - 1, endc - cnum + 1)
+        else
+            var mlist = [lines[0]->strpart(cnum - 1)] + lines[1 : -2] + [lines[-1]->strpart(0, endc)]
+            mstr = mlist->join('\n')
+        endif
+        if mstr != p.context && !found->has_key(mstr)
+            found[mstr] = 1
+            matches->add(mstr)
+        endif
+        cursor(lnum, cnum) # restore cursor to beginning of pattern, otherwise '?' does not work
+        [lnum, cnum] = p.async ? pattern->searchpos(flags, interval.stopl) :
+            pattern->searchpos(flags, 0, timeout)
 
-	if !p.async && ([startl, startc] == [lnum, cnum] ||
-		(starttime->reltime()->reltimefloat() * 1000) > timeout)
-	    break
-	endif
+        if !p.async && ([startl, startc] == [lnum, cnum] ||
+                (starttime->reltime()->reltimefloat() * 1000) > timeout)
+            break
+        endif
     endwhile
     return matches
 enddef
@@ -180,33 +185,33 @@ def BufFuzzyMatches(popup: dict<any>): list<any>
     var batches = []
     const MaxLines = 5000 # on M1 it takes 100ms to process 9k lines
     if line('$') > MaxLines
-	var lineend = min([line('.') + MaxLines, line('$')])
-	batches->add({start: line('.'), end: lineend})
-	var linestart = max([line('.') - MaxLines, 0])
-	var remaining = line('.') + MaxLines - line('$')
-	if linestart != 0 && remaining > 0
-	    linestart = max([linestart - remaining, 0])
-	endif
-	batches->add({start: linestart, end: line('.')})
+        var lineend = min([line('.') + MaxLines, line('$')])
+        batches->add({start: line('.'), end: lineend})
+        var linestart = max([line('.') - MaxLines, 0])
+        var remaining = line('.') + MaxLines - line('$')
+        if linestart != 0 && remaining > 0
+            linestart = max([linestart - remaining, 0])
+        endif
+        batches->add({start: linestart, end: line('.')})
     else
-	batches->add({start: 1, end: line('$')})
+        batches->add({start: 1, end: line('$')})
     endif
     for batch in batches
-	var linenr = batch.start 
-	for line in getline(batch.start, batch.end)
-	    for word in line->split('\W\+')
-		if !found->has_key(word) && word->len() > 1
-		    found[word] = 1
-		    words->add(word)
-		endif
-	    endfor
-	    # Check every 200 lines if timeout is exceeded
-	    if timeout > 0 && linenr % 200 == 0 &&
-		    starttime->reltime()->reltimefloat() * 1000 > timeout
-		break
-	    endif
-	    linenr += 1
-	endfor
+        var linenr = batch.start 
+        for line in getline(batch.start, batch.end)
+            for word in line->split('\W\+')
+                if !found->has_key(word) && word->len() > 1
+                    found[word] = 1
+                    words->add(word)
+                endif
+            endfor
+            # Check every 200 lines if timeout is exceeded
+            if timeout > 0 && linenr % 200 == 0 &&
+                    starttime->reltime()->reltimefloat() * 1000 > timeout
+                break
+            endif
+            linenr += 1
+        endfor
     endfor
     return words->matchfuzzy(p.context, { matchseq: 1, limit: 100 }) # max 100 matches
 enddef
@@ -220,16 +225,16 @@ enddef
 def ShowPopupMenu(popup: dict<any>)
     var p = popup
     if options.pum
-	var lastword = p.context->matchstr('\s*\S\+$')
-	p.winid->popup_move({col: p.context->strridx(lastword) + 2})
-	p.winid->popup_settext(p.keywords)
+        var lastword = p.context->matchstr('\s*\S\+$')
+        p.winid->popup_move({col: p.context->strridx(lastword) + 2})
+        p.winid->popup_settext(p.keywords)
     else
-	var hmenu = p.keywords->join('  ')
-	if hmenu->len() > HMenuWidth()
-	    var lastSpaceChar = match(hmenu[0 : HMenuWidth() - 4], '.*\zs\s')
-	    hmenu = hmenu->slice(0, lastSpaceChar == -1 ? 0 : lastSpaceChar) .. ' >'
-	endif
-	hmenu->setbufline(p.winid->winbufnr(), 1)
+        var hmenu = p.keywords->join('  ')
+        if hmenu->len() > HMenuWidth()
+            var lastSpaceChar = match(hmenu[0 : HMenuWidth() - 4], '.*\zs\s')
+            hmenu = hmenu->slice(0, lastSpaceChar == -1 ? 0 : lastSpaceChar) .. ' >'
+        endif
+        hmenu->setbufline(p.winid->winbufnr(), 1)
     endif
     p.index = -1
     p.winid->popup_setoptions({cursorline: false})
@@ -238,7 +243,7 @@ def ShowPopupMenu(popup: dict<any>)
     matchadd('AS_SearchCompletePrefix', mpat, 10, -1, {window: p.winid})
     p.winid->popup_show()
     if !&incsearch # redraw only when noincsearch, otherwise highlight flickers
-       :redraw
+        :redraw
     endif
     DisableCmdline()
 enddef
@@ -249,7 +254,7 @@ def SearchWorker(popup: dict<any>, attr: dict<any>, timer: number)
     var timediff = p.starttime->reltime(attr.starttime)->reltimefloat()
     var context = getcmdline()->strpart(0, getcmdpos() - 1)
     if context !=# p.context || timediff < 0 || attr.index >= attr.intervals->len()
-	return
+        return
     endif
 
     var interval = attr.intervals[attr.index]
@@ -261,21 +266,21 @@ def SearchWorker(popup: dict<any>, attr: dict<any>, timer: number)
     # Add matched fragments to list of candidates and segregate
     var candidates = timediff > 0 ? matches : p.candidates + matches
     p.candidates = candidates->copy()->filter((_, v) => v =~# $'^{p.context}') +
-	candidates->copy()->filter((_, v) => v !~# $'^{p.context}')
+        candidates->copy()->filter((_, v) => v !~# $'^{p.context}')
     p.keywords = p.candidates->copy()->map((_, val) => val->matchstr('\s*\zs\S\+$'))
 
     if len(p.keywords) > 0
-	p.showPopupMenu()
-	# Workaround for vim bug 12538: Explicitly call matchadd and matchaddpos
-	# https://github.com/vim/vim/issues/12538
-	if &hlsearch
-	    matchadd('Search', &ignorecase ? $'\c{p.context}' : p.context, 11)
-	    :redraw
-	endif
-	if &incsearch && p.firstmatch != []
-	    matchaddpos('IncSearch', [p.firstmatch], 12)
-	    :redraw
-	endif
+        p.showPopupMenu()
+        # Workaround for vim bug 12538: Explicitly call matchadd and matchaddpos
+        # https://github.com/vim/vim/issues/12538
+        if &hlsearch
+            matchadd('Search', &ignorecase ? $'\c{p.context}' : p.context, 11)
+            :redraw
+        endif
+        if &incsearch && p.firstmatch != []
+            matchaddpos('IncSearch', [p.firstmatch], 12)
+            :redraw
+        endif
     endif
 
     attr.index += 1
@@ -288,29 +293,29 @@ def UpdateMenu(popup: dict<any>, key: string)
     var context = getcmdline()->strpart(0, getcmdpos() - 1) .. key
     # https://github.com/girishji/autosuggest.vim/issues/2: `\` causes errors in searchpos()
     if context == '' || context =~ '^\s\+$' || context =~ '\'
-	return
+        return
     endif
     p.context = context
     p.starttime = reltime()
     p.candidates = []
     p.keywords = []
     if p.async
-	var attr = {
-	    starttime: p.starttime,
-	    intervals: p.isfwd->SearchIntervals(options.range),
-	    index: 0,
-	}
-	p->SearchWorker(attr, 0)
+        var attr = {
+            starttime: p.starttime,
+            intervals: p.isfwd->SearchIntervals(options.range),
+            index: 0,
+        }
+        p->SearchWorker(attr, 0)
     else
-	var cursorpos = [line('.'), col('.')]
-	var matches = options.fuzzy ? p.bufFuzzyMatches() : p.bufMatches({})
-	cursor(cursorpos)
-	p.candidates = matches->copy()->filter((_, v) => v =~# $'^{p.context}') +
-	    matches->copy()->filter((_, v) => v !~# $'^{p.context}')
-	p.keywords = p.candidates->copy()->map((_, val) => val->matchstr('\s*\zs\S\+$'))
-	if len(p.keywords) > 0
-	    p.showPopupMenu()
-	endif
+        var cursorpos = [line('.'), col('.')]
+        var matches = options.fuzzy ? p.bufFuzzyMatches() : p.bufMatches({})
+        cursor(cursorpos)
+        p.candidates = matches->copy()->filter((_, v) => v =~# $'^{p.context}') +
+            matches->copy()->filter((_, v) => v !~# $'^{p.context}')
+        p.keywords = p.candidates->copy()->map((_, val) => val->matchstr('\s*\zs\S\+$'))
+        if len(p.keywords) > 0
+            p.showPopupMenu()
+        endif
     endif
 enddef
 
@@ -319,89 +324,89 @@ def SelectItem(popup: dict<any>, direction: string)
     var p = popup
     var count = p.keywords->len()
     def SelectVert()
-	if p.winid->popup_getoptions().cursorline
-	    if p.index == (direction ==# 'j' ? count - 1 : 0)
-		for _ in range(count - 1)
-		    p.winid->popup_filter_menu(direction ==# 'j' ? 'k' : 'j')
-		endfor
-		p.index = (direction ==# 'j' ? 0 : count - 1)
-	    else
-		p.winid->popup_filter_menu(direction)
-		p.index += (direction ==# 'j' ? 1 : -1)
-	    endif
-	else
-	    p.winid->popup_setoptions({cursorline: true})
-	    for _ in range(count - 1) # rewind to first item
-		p.winid->popup_filter_menu('k')
-	    endfor
-	    p.index = 0
-	endif
+        if p.winid->popup_getoptions().cursorline
+            if p.index == (direction ==# 'j' ? count - 1 : 0)
+                for _ in range(count - 1)
+                    p.winid->popup_filter_menu(direction ==# 'j' ? 'k' : 'j')
+                endfor
+                p.index = (direction ==# 'j' ? 0 : count - 1)
+            else
+                p.winid->popup_filter_menu(direction)
+                p.index += (direction ==# 'j' ? 1 : -1)
+            endif
+        else
+            p.winid->popup_setoptions({cursorline: true})
+            for _ in range(count - 1) # rewind to first item
+                p.winid->popup_filter_menu('k')
+            endfor
+            p.index = 0
+        endif
     enddef
 
     def SelectHoriz()
-	var rotate = false
-	if p.index == -1
-	    p.index = direction ==# 'j' ? 0 : count - 1
-	    rotate = true
-	else
-	    if p.index == (direction ==# 'j' ? count - 1 : 0)
-		p.index = (direction ==# 'j' ? 0 : count - 1)
-		rotate = true
-	    else
-		p.index += (direction ==# 'j' ? 1 : -1)
-	    endif
-	endif
-	var hmenustr = getbufline(p.winid->winbufnr(), 1)[0]
-	var kwordpat = $'\<{p.keywords[p.index]}\>'
-	if hmenustr !~# kwordpat
-	    def HMenuStr(kwidx: number, position: string): string
-		var selected = [p.keywords[kwidx]]
-		var atleft = position ==# 'left'
-		var overflowl = kwidx > 0
-		var overflowr = kwidx < p.keywords->len() - 1
-		var idx = kwidx
-		while (atleft && idx < p.keywords->len() - 1) ||
-			(!atleft && idx > 0)
-		    idx += (atleft ? 1 : -1)
-		    var last = (atleft ? idx == p.keywords->len() - 1 : idx == 0)
-		    if selected->join('  ')->len() + p.keywords[idx]->len() + 1 <
-			    HMenuWidth() - (last ? 0 : 4)
-			if atleft
-			    selected->add(p.keywords[idx])
-			else
-			    selected->insert(p.keywords[idx])
-			endif
-		    else
-			idx -= (atleft ? 1 : -1)
-			break
-		    endif
-		endwhile
-		if atleft
-		    overflowr = idx < p.keywords->len() - 1
-		else
-		    overflowl = idx > 0
-		endif
-		return (overflowl ? '< ' : '') .. selected->join('  ') .. (overflowr ? ' >' : '')
-	    enddef
-	    var hmenu = ''
-	    if direction ==# 'j'
-		hmenu = rotate ? HMenuStr(0, 'left') : HMenuStr(p.index, 'right')
-	    else
-		hmenu = rotate ? HMenuStr(p.keywords->len() - 1, 'right') : HMenuStr(p.index, 'left')
-	    endif
-	    hmenu->setbufline(p.winid->winbufnr(), 1)
-	endif
-	clearmatches(p.winid)
-	var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}'
-	matchadd('AS_SearchCompletePrefix', mpat, 10, -1, {window: p.winid})
-	matchadd('PMenuSel', kwordpat, 11, -1, {window: p.winid})
+        var rotate = false
+        if p.index == -1
+            p.index = direction ==# 'j' ? 0 : count - 1
+            rotate = true
+        else
+            if p.index == (direction ==# 'j' ? count - 1 : 0)
+                p.index = (direction ==# 'j' ? 0 : count - 1)
+                rotate = true
+            else
+                p.index += (direction ==# 'j' ? 1 : -1)
+            endif
+        endif
+        var hmenustr = getbufline(p.winid->winbufnr(), 1)[0]
+        var kwordpat = $'\<{p.keywords[p.index]}\>'
+        if hmenustr !~# kwordpat
+            def HMenuStr(kwidx: number, position: string): string
+                var selected = [p.keywords[kwidx]]
+                var atleft = position ==# 'left'
+                var overflowl = kwidx > 0
+                var overflowr = kwidx < p.keywords->len() - 1
+                var idx = kwidx
+                while (atleft && idx < p.keywords->len() - 1) ||
+                        (!atleft && idx > 0)
+                    idx += (atleft ? 1 : -1)
+                    var last = (atleft ? idx == p.keywords->len() - 1 : idx == 0)
+                    if selected->join('  ')->len() + p.keywords[idx]->len() + 1 <
+                            HMenuWidth() - (last ? 0 : 4)
+                        if atleft
+                            selected->add(p.keywords[idx])
+                        else
+                            selected->insert(p.keywords[idx])
+                        endif
+                    else
+                        idx -= (atleft ? 1 : -1)
+                        break
+                    endif
+                endwhile
+                if atleft
+                    overflowr = idx < p.keywords->len() - 1
+                else
+                    overflowl = idx > 0
+                endif
+                return (overflowl ? '< ' : '') .. selected->join('  ') .. (overflowr ? ' >' : '')
+            enddef
+            var hmenu = ''
+            if direction ==# 'j'
+                hmenu = rotate ? HMenuStr(0, 'left') : HMenuStr(p.index, 'right')
+            else
+                hmenu = rotate ? HMenuStr(p.keywords->len() - 1, 'right') : HMenuStr(p.index, 'left')
+            endif
+            hmenu->setbufline(p.winid->winbufnr(), 1)
+        endif
+        clearmatches(p.winid)
+        var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}'
+        matchadd('AS_SearchCompletePrefix', mpat, 10, -1, {window: p.winid})
+        matchadd('PMenuSel', kwordpat, 11, -1, {window: p.winid})
     enddef
 
     options.pum ? SelectVert() : SelectHoriz()
     clearmatches()
     setcmdline(p.candidates[p.index])
     if &hlsearch
-	matchadd('Search', &ignorecase ? $'\c{p.context}' : p.context, 11)
+        matchadd('Search', &ignorecase ? $'\c{p.context}' : p.context, 11)
     endif
     :redraw # Both flatmenu and vertical menu needs redraw after they change selection
 enddef
@@ -414,25 +419,25 @@ def Filter(winid: number, key: string): bool
     var p = completor
     # Note: do not include arrow keys or <c-n> <c-p> since they are used for history lookup
     if key ==? "\<tab>"
-	p.selectItem('j') # next item
+        p.selectItem('j') # next item
     elseif key ==? "\<s-tab>"
-	p.selectItem('k') # prev item
+        p.selectItem('k') # prev item
     elseif key ==? "\<c-e>"
-	clearmatches()
-	p.winid->popup_hide()
-	setcmdline('')
-	feedkeys(p.context, 'n')
-	:redraw!
-	timer_start(0, (_) => EnableCmdline()) # timer will que this after feedkeys
+        clearmatches()
+        p.winid->popup_hide()
+        setcmdline('')
+        feedkeys(p.context, 'n')
+        :redraw!
+        timer_start(0, (_) => EnableCmdline()) # timer will que this after feedkeys
     elseif key ==? "\<cr>" || key ==? "\<esc>"
-	EnableCmdline()
-	return false
+        EnableCmdline()
+        return false
     else
-	clearmatches()
-	p.winid->popup_hide()
-	EnableCmdline()
-	p.updateMenu(key)
-	return false # Let vim's usual mechanism (search highlighting) handle this
+        clearmatches()
+        p.winid->popup_hide()
+        EnableCmdline()
+        p.updateMenu(key)
+        return false # Let vim's usual mechanism (search highlighting) handle this
     endif
     return true
 enddef
@@ -443,31 +448,31 @@ enddef
 def CompleteWord(popup: dict<any>)
     var p = popup
     if p.winid->popup_getoptions() == {} # popup does not exist, create it
-	var attr = {
-	    cursorline: false, # Do not automatically select the first item
-	    pos: 'botleft',
-	    line: &lines - &cmdheight,
-	    col: 1,
-	    drag: false,
-	    border: [0, 0, 0, 0],
-	    filtermode: 'c',
-	    filter: Filter,
-	    hidden: true,
-	    maxheight: options.maxheight,
-	    callback: (winid, result) => {
-		clearmatches()
-		if result == -1 # popup force closed due to <c-c> or cursor mvmt
-		    EnableCmdline()
-		    feedkeys("\<c-c>", 'n')
-		endif
-	    },
-	}
-	if options.pum
-	    attr->extend({ minwidth: 14 })
-	else
-	    attr->extend({ scrollbar: 0, padding: [0, 0, 0, 0], highlight: 'statusline' })
-	endif
-	p.winid = popup_menu([], attr)
+        var attr = {
+            cursorline: false, # Do not automatically select the first item
+            pos: 'botleft',
+            line: &lines - &cmdheight,
+            col: 1,
+            drag: false,
+            border: [0, 0, 0, 0],
+            filtermode: 'c',
+            filter: Filter,
+            hidden: true,
+            maxheight: options.maxheight,
+            callback: (winid, result) => {
+                clearmatches()
+                if result == -1 # popup force closed due to <c-c> or cursor mvmt
+                    EnableCmdline()
+                    feedkeys("\<c-c>", 'n')
+                endif
+            },
+        }
+        if options.pum
+            attr->extend({ minwidth: 14 })
+        else
+            attr->extend({ scrollbar: 0, padding: [0, 0, 0, 0], highlight: 'statusline' })
+        endif
+        p.winid = popup_menu([], attr)
     endif
     p.updateMenu('')
 enddef
