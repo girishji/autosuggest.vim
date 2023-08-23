@@ -172,7 +172,7 @@ Another solution is to disable and enable.
 
 You can define some interesting keymappings with the help of this plugin. Here
 are two examples. First one will help you open file under current working
-directory. Second mapping switches buffers. Use `<tab` to choose from menu.
+directory. Second mapping switches buffers. Use `<tab>` to choose from menu.
 
 ```
 nnoremap <leader><space> :e<space>**/*<left>
