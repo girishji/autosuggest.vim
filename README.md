@@ -168,6 +168,8 @@ Another solution is to disable and enable.
 :nnoremap <leader>b :AutoSuggestDisable<cr>:buffers<cr>:let nr = input("Which one: ")<Bar>exe $'buffer {nr}'<bar>AutoSuggestEnable<cr>
 ```
 
+### Open Files and Switch Buffers Quickly
+
 You can define some interesting keymappings with the help of this plugin. Here
 are two examples. First one will help you open file under current working
 directory. Second mapping switches buffers. Use `<tab` to choose from menu.
