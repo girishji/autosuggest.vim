@@ -175,8 +175,8 @@ are two examples. First one will help you open file under current working
 directory. Second mapping switches buffers. Use `<tab>` to choose from menu.
 
 ```
-nnoremap <leader><space> :e<space>**/*<left>
-nnoremap <leader><bs> :buffer<space>
+nnoremap <leader>f :e<space>**/*<left>
+nnoremap <leader>b :buffer<space>
 
 # Set the following option
 autocmd VimEnter * g:AutoSuggestSetup({ cmd: { onspace: ['buffer'] }})
