@@ -325,20 +325,11 @@ def SelectItem(popup: dict<any>, direction: string)
     var count = p.keywords->len()
     def SelectVert()
         if p.winid->popup_getoptions().cursorline
-            if p.index == (direction ==# 'j' ? count - 1 : 0)
-                for _ in range(count - 1)
-                    p.winid->popup_filter_menu(direction ==# 'j' ? 'k' : 'j')
-                endfor
-                p.index = (direction ==# 'j' ? 0 : count - 1)
-            else
-                p.winid->popup_filter_menu(direction)
-                p.index += (direction ==# 'j' ? 1 : -1)
-            endif
+            p.winid->popup_filter_menu(direction)
+            p.index += (direction ==# 'j' ? 1 : -1)
+            p.index %= count
         else
             p.winid->popup_setoptions({cursorline: true})
-            for _ in range(count - 1) # rewind to first item
-                p.winid->popup_filter_menu('k')
-            endfor
             p.index = 0
         endif
     enddef
