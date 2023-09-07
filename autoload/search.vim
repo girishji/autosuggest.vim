@@ -122,10 +122,14 @@ def BufMatches(popup: dict<any>, interval: dict<any>): list<any>
     var p = popup
     var flags = p.async ? (p.isfwd ? '' : 'b') : (p.isfwd ? 'w' : 'wb')
     if p.async && p.firstmatch == [] # find first match to highlight (vim bug 12538)
-        var [lnum, cnum] = p.context->searchpos(flags, interval.stopl)
-        if [lnum, cnum] != [0, 0]
-            p.firstmatch = [lnum, cnum, p.context->len()]
-        endif
+        try
+            var [lnum, cnum] = p.context->searchpos(flags, interval.stopl)
+            if [lnum, cnum] != [0, 0]
+                p.firstmatch = [lnum, cnum, p.context->len()]
+            endif
+        catch # E33 is thrown when ~ is the first character of search
+            return []
+        endtry
     endif
     var pattern = p.context =~ '\s' ? $'{p.context}\k*' : $'\k*{p.context}\k*'
     var [lnum, cnum] = [0, 0]
