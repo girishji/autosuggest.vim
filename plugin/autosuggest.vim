@@ -1,8 +1,8 @@
 " CmdLine completion plugin for Vim >= v9.0
 
 if !has('vim9script') || v:version < 900
-  " Needs Vim version 9.0 and above
-  finish
+    " Needs Vim version 9.0 and above
+    finish
 endif
 
 vim9script
@@ -24,9 +24,9 @@ autocmd VimEnter * Reset()
 
 def! g:AutoSuggestSetup(opts: dict<any>)
     var Update = (key) => {
-	if opts->has_key(key)
-	    opt.options[key]->extend(opts[key])
-	endif
+        if opts->has_key(key)
+            opt.options[key]->extend(opts[key])
+        endif
     }
     Update('search')
     Update('cmd')

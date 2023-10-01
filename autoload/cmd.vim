@@ -136,7 +136,7 @@ def DoComplete(oldcontext: string, timer: number)
         # Likely pasted text or coming from keymap
         return
     endif
-    for pat in options.exclude
+    for pat in (options.exclude + options.autoexclude)
         if context =~ pat
             return
         endif
