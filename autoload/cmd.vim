@@ -106,28 +106,44 @@ def ExtractShowable(context: string, completions: list<any>): number
     return max([1, pos + 2])
 enddef
 
+def ShowFiles(timer: number)
+    if wildmenumode()
+        for _ in range(pum_getpos().size)
+            feedkeys("\<tab>", 'tn')
+        endfor
+    endif
+enddef
+
 # Verify that this completion does not take a long time (does not hang)
 def Verify(context: string): bool
     if context !~ '\*\*'
         return true
-    endif
-    const Timeout = 500 # millisec
-    var start = reltime()
-    var cmd = ['vim', '-es', $'+:silent! call getcompletion("{context}", "cmdline") | q!']
-    var vjob: job = job_start(cmd)
-    while start->reltime()->reltimefloat() * 1000 < Timeout
-        if vjob->job_status() ==? 'run'
-            :sleep 5m
-        else
-            break
-        endif
-    endwhile
-    if vjob->job_status() ==? 'run'
-        vjob->job_stop('kill')
-        # echom 'Aborted job, taking too long: ' .. context
+    elseif context =~ '\v^(e|ed|edi|edit) '
+        # getcompletion('edit **', 'cmdline') does not respect wildignore just
+        # like 'file' instead of 'cmdline'. However 'file_in_path' respects
+        # wildignore but takes too long (5x longer compared to <tab>
+        # completion which also respects wildignore).
+        feedkeys("\<tab>", 'tn')
+        timer_start(1, function(ShowFiles))
         return false
+    else
+        var start = reltime()
+        var cmd = ['vim', '-es', $'+:silent! call getcompletion("{context}", "cmdline") | q!']
+        var vjob: job = job_start(cmd)
+        while start->reltime()->reltimefloat() * 1000 < options.timeout
+            if vjob->job_status() ==? 'run'
+                :sleep 5m
+            else
+                break
+            endif
+        endwhile
+        if vjob->job_status() ==? 'run'
+            vjob->job_stop('kill')
+            # echom 'Aborted job, taking too long: ' .. context
+            return false
+        endif
+        return true
     endif
-    return true
 enddef
 
 def DoComplete(oldcontext: string, timer: number)

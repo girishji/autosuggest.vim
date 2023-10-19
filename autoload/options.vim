@@ -14,13 +14,14 @@ export var options: dict<any> = {
     },
     cmd: {
         enable: true,
-        delay: 10,      # delay before showing popup
+        delay: 10,      # delay in ms before showing popup
         pum: true,      # 'false' for flat menu, 'true' for stacked menu
         fuzzy: false,   # fuzzy completion
         hidestatusline: false, # hide statusline (so it is not visible underneath when pum=false)
         exclude: [],    # keywords excluded from completion (use \c for ignorecase)
         autoexclude: ["'>"], # keywords automatically excluded from completion
         onspace: [],    # show menu for keyword+space (ex. :find , :buffer , etc.)
+        timeout: 500,   # max time in ms to search when '**' is specified in path
     }
 }
 
