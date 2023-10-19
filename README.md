@@ -176,7 +176,7 @@ directory. Second mapping switches buffers. Type a few letters to narrow the
 search and use `<tab>` to choose from menu.
 
 ```
-nnoremap <leader>f :e<space>**/
+nnoremap <leader>f :e<space>**/*<left>
 nnoremap <leader>b :buffer<space>
 
 # Set the following option

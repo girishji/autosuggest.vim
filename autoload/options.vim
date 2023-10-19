@@ -22,6 +22,7 @@ export var options: dict<any> = {
         autoexclude: ["'>"], # keywords automatically excluded from completion
         onspace: [],    # show menu for keyword+space (ex. :find , :buffer , etc.)
         timeout: 500,   # max time in ms to search when '**' is specified in path
+        editcmdworkaround: false,  # make :edit respect wildignore (without using file_in_path in getcompletion() which is slow)
     }
 }
 

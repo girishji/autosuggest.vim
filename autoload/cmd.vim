@@ -118,7 +118,7 @@ enddef
 def Verify(context: string): bool
     if context !~ '\*\*'
         return true
-    elseif context =~ '\v^(e|ed|edi|edit) '
+    elseif options.editcmdworkaround && context =~ '\v^(e|ed|edi|edit) '
         # getcompletion('edit **', 'cmdline') does not respect wildignore just
         # like 'file' instead of 'cmdline'. However 'file_in_path' respects
         # wildignore but takes too long (5x longer compared to <tab>
