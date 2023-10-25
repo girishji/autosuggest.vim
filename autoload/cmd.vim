@@ -39,9 +39,9 @@ def PopupCreate()
         },
     }
     if options.pum
-        attr->extend({ minwidth: 14 }) 
+        attr->extend({ minwidth: 14 })
     else
-        attr->extend({ scrollbar: 0, padding: [0, 0, 0, 0], highlight: 'statusline' }) 
+        attr->extend({ scrollbar: 0, padding: [0, 0, 0, 0], highlight: 'statusline' })
     endif
     popup_winid = popup_menu([], attr)
 enddef
