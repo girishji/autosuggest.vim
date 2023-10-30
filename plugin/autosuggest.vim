@@ -33,7 +33,7 @@ def! g:AutoSuggestSetup(opts: dict<any>)
     Reset()
 enddef
 
-def! g:AutoSuggestGetOptions(): list<any>
+def! g:AutoSuggestGetOptions(): dict<any>
     return opt.options->deepcopy()
 enddef
 
