@@ -33,6 +33,10 @@ def! g:AutoSuggestSetup(opts: dict<any>)
     Reset()
 enddef
 
+def! g:AutoSuggestGetOptions(): list<any>
+    return opt.options->deepcopy()
+enddef
+
 def AutoSuggestEnable(flag: bool)
     opt.options.search.enable = flag
     opt.options.cmd.enable = flag
