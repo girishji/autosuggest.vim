@@ -413,9 +413,9 @@ enddef
 def Filter(winid: number, key: string): bool
     var p = completor
     # Note: do not include arrow keys or <c-n> <c-p> since they are used for history lookup
-    if key ==? "\<tab>"
+    if key ==? "\<tab>" || key ==? "\<c-n>"
         p.selectItem('j') # next item
-    elseif key ==? "\<s-tab>"
+    elseif key ==? "\<s-tab>" || key ==? "\<c-p>"
         p.selectItem('k') # prev item
     elseif key ==? "\<c-e>"
         clearmatches()
@@ -432,7 +432,7 @@ def Filter(winid: number, key: string): bool
         p.winid->popup_hide()
         EnableCmdline()
         p.updateMenu(key)
-        return false # Let vim's usual mechanism (search highlighting) handle this
+        return false # Let vim's usual mechanism (ex. search highlighting) handle this
     endif
     return true
 enddef
