@@ -19,7 +19,7 @@ export var options: dict<any> = {
         fuzzy: false,   # fuzzy completion
         hidestatusline: false, # hide statusline (so it is not visible underneath when pum=false)
         exclude: [],    # keywords excluded from completion (use \c for ignorecase)
-        autoexclude: ["'>"], # keywords automatically excluded from completion
+        autoexclude: ["'>", '^s/', '^g/'], # keywords automatically excluded from completion
         onspace: [],    # show menu for keyword+space (ex. :find , :buffer , etc.)
         timeout: 500,   # max time in ms to search when '**' is specified in path
         editcmdworkaround: false,  # make :edit respect wildignore (without using file_in_path in getcompletion() which is slow)
