@@ -271,6 +271,7 @@ def SearchWorker(popup: dict<any>, attr: dict<any>, timer: number)
     var candidates = timediff > 0 ? matches : p.candidates + matches
     p.candidates = candidates->copy()->filter((_, v) => v =~# $'^{p.context}') +
         candidates->copy()->filter((_, v) => v !~# $'^{p.context}')
+    p.candidates->filter((_, v) => v !~# '\~') # avoid E33, E383
     p.keywords = p.candidates->copy()->map((_, val) => val->matchstr('\s*\zs\S\+$'))
 
     if len(p.keywords) > 0
@@ -316,6 +317,7 @@ def UpdateMenu(popup: dict<any>, key: string)
         cursor(cursorpos)
         p.candidates = matches->copy()->filter((_, v) => v =~# $'^{p.context}') +
             matches->copy()->filter((_, v) => v !~# $'^{p.context}')
+        p.candidates->filter((_, v) => v !~# '\~') # avoid E33, E383
         p.keywords = p.candidates->copy()->map((_, val) => val->matchstr('\s*\zs\S\+$'))
         if len(p.keywords) > 0
             p.showPopupMenu()
@@ -413,30 +415,27 @@ enddef
 def Filter(winid: number, key: string): bool
     var p = completor
     # Note: do not include arrow keys or <c-n> <c-p> since they are used for history lookup
-    try
-        if key ==? "\<tab>" || key ==? "\<c-n>"
-            p.selectItem('j') # next item
-        elseif key ==? "\<s-tab>" || key ==? "\<c-p>"
-            p.selectItem('k') # prev item
-        elseif key ==? "\<c-e>"
-            clearmatches()
-            p.winid->popup_hide()
-            setcmdline('')
-            feedkeys(p.context, 'n')
-            :redraw!
-            timer_start(0, (_) => EnableCmdline()) # timer will que this after feedkeys
-        elseif key ==? "\<cr>" || key ==? "\<esc>"
-            EnableCmdline()
-            return false
-        else
-            clearmatches()
-            p.winid->popup_hide()
-            EnableCmdline()
-            p.updateMenu(key)
-            return false # Let vim's usual mechanism (ex. search highlighting) handle this
-        endif
-    catch
-    endtry
+    if key ==? "\<tab>" || key ==? "\<c-n>"
+        p.selectItem('j') # next item
+    elseif key ==? "\<s-tab>" || key ==? "\<c-p>"
+        p.selectItem('k') # prev item
+    elseif key ==? "\<c-e>"
+        clearmatches()
+        p.winid->popup_hide()
+        setcmdline('')
+        feedkeys(p.context, 'n')
+        :redraw!
+        timer_start(0, (_) => EnableCmdline()) # timer will que this after feedkeys
+    elseif key ==? "\<cr>" || key ==? "\<esc>"
+        EnableCmdline()
+        return false
+    else
+        clearmatches()
+        p.winid->popup_hide()
+        EnableCmdline()
+        p.updateMenu(key)
+        return false # Let vim's usual mechanism (ex. search highlighting) handle this
+    endif
     return true
 enddef
 
