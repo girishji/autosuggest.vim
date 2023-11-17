@@ -413,27 +413,30 @@ enddef
 def Filter(winid: number, key: string): bool
     var p = completor
     # Note: do not include arrow keys or <c-n> <c-p> since they are used for history lookup
-    if key ==? "\<tab>" || key ==? "\<c-n>"
-        p.selectItem('j') # next item
-    elseif key ==? "\<s-tab>" || key ==? "\<c-p>"
-        p.selectItem('k') # prev item
-    elseif key ==? "\<c-e>"
-        clearmatches()
-        p.winid->popup_hide()
-        setcmdline('')
-        feedkeys(p.context, 'n')
-        :redraw!
-        timer_start(0, (_) => EnableCmdline()) # timer will que this after feedkeys
-    elseif key ==? "\<cr>" || key ==? "\<esc>"
-        EnableCmdline()
-        return false
-    else
-        clearmatches()
-        p.winid->popup_hide()
-        EnableCmdline()
-        p.updateMenu(key)
-        return false # Let vim's usual mechanism (ex. search highlighting) handle this
-    endif
+    try
+        if key ==? "\<tab>" || key ==? "\<c-n>"
+            p.selectItem('j') # next item
+        elseif key ==? "\<s-tab>" || key ==? "\<c-p>"
+            p.selectItem('k') # prev item
+        elseif key ==? "\<c-e>"
+            clearmatches()
+            p.winid->popup_hide()
+            setcmdline('')
+            feedkeys(p.context, 'n')
+            :redraw!
+            timer_start(0, (_) => EnableCmdline()) # timer will que this after feedkeys
+        elseif key ==? "\<cr>" || key ==? "\<esc>"
+            EnableCmdline()
+            return false
+        else
+            clearmatches()
+            p.winid->popup_hide()
+            EnableCmdline()
+            p.updateMenu(key)
+            return false # Let vim's usual mechanism (ex. search highlighting) handle this
+        endif
+    catch
+    endtry
     return true
 enddef
 
