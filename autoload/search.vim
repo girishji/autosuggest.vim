@@ -131,7 +131,9 @@ def BufMatches(popup: dict<any>, interval: dict<any>): list<any>
             return []
         endtry
     endif
-    var pattern = p.context =~ '\s' ? $'{p.context}\k*' : $'\k*{p.context}\k*'
+    # XXX: \k includes '~'. it causes E33 and E383 after <cr> if '~' is in a menu item. use \w instead.
+    # var pattern = p.context =~ '\s' ? $'{p.context}\k*' : $'\k*{p.context}\k*'
+    var pattern = p.context =~ '\s' ? $'{p.context}\w*' : $'\w*{p.context}\w*'
     var [lnum, cnum] = [0, 0]
     var [startl, startc] = [0, 0]
     try
@@ -271,7 +273,6 @@ def SearchWorker(popup: dict<any>, attr: dict<any>, timer: number)
     var candidates = timediff > 0 ? matches : p.candidates + matches
     p.candidates = candidates->copy()->filter((_, v) => v =~# $'^{p.context}') +
         candidates->copy()->filter((_, v) => v !~# $'^{p.context}')
-    p.candidates->filter((_, v) => v !~# '\~') # avoid E33, E383
     p.keywords = p.candidates->copy()->map((_, val) => val->matchstr('\s*\zs\S\+$'))
 
     if len(p.keywords) > 0
@@ -317,7 +318,6 @@ def UpdateMenu(popup: dict<any>, key: string)
         cursor(cursorpos)
         p.candidates = matches->copy()->filter((_, v) => v =~# $'^{p.context}') +
             matches->copy()->filter((_, v) => v !~# $'^{p.context}')
-        p.candidates->filter((_, v) => v !~# '\~') # avoid E33, E383
         p.keywords = p.candidates->copy()->map((_, val) => val->matchstr('\s*\zs\S\+$'))
         if len(p.keywords) > 0
             p.showPopupMenu()
