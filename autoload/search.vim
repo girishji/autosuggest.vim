@@ -155,7 +155,7 @@ def BufMatches(popup: dict<any>, interval: dict<any>): list<any>
     endfor
     var starttime = p.starttime
     var timeout = options.timeout
-    while [lnum, cnum] != [0, 0]
+    while [lnum, cnum] != [0, 0] && matches->len() < 50
         var [endl, endc] = pattern->searchpos('ceW') # end of matching string
         var lines = getline(lnum, endl)
         var mstr = '' # fragment that matches pattern (can be multiline)
