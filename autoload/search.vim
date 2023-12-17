@@ -165,7 +165,7 @@ def BufMatches(popup: dict<any>, interval: dict<any>): list<any>
             var mlist = [lines[0]->strpart(cnum - 1)] + lines[1 : -2] + [lines[-1]->strpart(0, endc)]
             mstr = mlist->join('\n')
         endif
-        if mstr != p.context && !found->has_key(mstr)
+        if !found->has_key(mstr)
             found[mstr] = 1
             matches->add(mstr)
         endif
