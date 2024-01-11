@@ -1,32 +1,30 @@
-### Autocomplete Plugin for Vim's Cmdline Mode (Needs Vim >= 9.0)
+# autosuggest.vim
 
-Wouldn't it be nice to have autocomplete during search and command execution?
-This unobtrusive plugin simply opens a popup menu and shows 
-autocompletion options when you search (`/`, `?`) or enter commands (`:`) in
-commandline-mode.
+Autocompletion for Vim's Cmdline Mode. This unobtrusive plugin opens a popup menu of candidate items during search (`/`, `?`) and command (`:`) execution.
 
-__How it helps?__
+## Key Features
 
 - Preview searchable words and commands (and their arguments).
 - Search multiple words, even across line boundary; Fuzzy search.
 - All Vim idioms work as before. No surprises.
 - Fast, does not hang up when searching large files or expanding wildcards.
+  
+## Usage
 
-__How to use it?__
+Vim's default keybindings are not altered in any way.
 
-- Search using `/` or `?` or enter commands using `:` as usual.
-- `<Tab>` and `<Shift-tab>` will select menu items.
-- `<Ctrl-E>` dismisses popup menu.
-- `<Enter>` accepts selection, and `<Esc>` dismisses search.
-- `<Ctrl-C>` will force popup menu to close.
+- `/` or `?` to search forward/backward.
+- `:` to enter commands.
+- `<Tab>` and `<Shift-tab>` (or `<Ctrl-N>` and `<Ctrl-P>`) to select menu items.
+- `<Ctrl-E>` to dismiss popup menu.
+- `<Enter>` to accept selection, and `<Esc>` to dismiss search.
+- `<Ctrl-C>` to force close popup menu.
 
-__Multiword Search__
+> [!NOTE]
+> For multi-word search, type the separator character (like `<Space>`) after the first word to trigger autocompletion for second word. Type `\n` at the end of the last word in a line to continue to next line. Setting fuzzy search option disables this feature.
 
-- Type the character between words (like `<Space>`) after the first word to include the second word in search.
-- Type `\n` at the end of the last word in a line to continue to next line.
-- Available only when fuzzy option is not selected.
-
-For insert-mode autocompletion see [Vimcomplete](https://github.com/girishji/vimcomplete).
+> [!NOTE]
+> For insert-mode autocompletion see [Vimcomplete](https://github.com/girishji/vimcomplete).
 
 ### Search
 
@@ -40,23 +38,22 @@ For insert-mode autocompletion see [Vimcomplete](https://github.com/girishji/vim
 
 [![asciicast](https://asciinema.org/a/DrvlJnoumCA9jWuMH8WGBCVJz.svg)](https://asciinema.org/a/DrvlJnoumCA9jWuMH8WGBCVJz)
 
-# Features
+## Features
 
-- Does not interfere with `[c|d|y]/{pattern}` commands (copy/delete/yank).
-- Respects forward (`/`) and reverse (`?`) search when displaying menu items.
-- Does not interfere with search-highlighting and incremental-search.
-- Does not interfere with search-history recall (arrow keys, `<Ctrl-N/P>` are not mapped).
-- Fuzzy search option.
 - Will not hang under any circumstance (including `**` wildcards)
-- Command names, arguments, Vimscript functions, variables, etc., are autocompleted.
+- Autocomplete command names, arguments, Vimscript functions, and variables.
 - Switch between normal popup menu and flat menu.
-- Written in Vim9script for readability and ease of maintenance (and speed).
+- `[c|d|y]/{pattern}` commands (copy/delete/yank) work as expected.
+- Search-highlighting, incremental-search, and history recall work as expected.
+- Distinguishes between forward (`/`) and reverse (`?`) search.
+- Fuzzy search option.
+- Written in Vim9script for ease of maintenance.
 
-# Requirements
+## Requirements
 
 - Vim >= 9.0
 
-# Installation
+## Installation
 
 Install using [vim-plug](https://github.com/junegunn/vim-plug)
 
@@ -77,7 +74,7 @@ call plug#end()
 
 Or use Vim's builtin package manager.
 
-# Configuration
+## Configuration
 
 ### Options
 
@@ -132,7 +129,7 @@ group (`:h hl-WildMenu`) can be used.
 Set `ignorecase` and `smartcase` using `set` command. See `:h 'ignorecase'` and
 `h 'smartcase'`.
 
-# Key Mapping
+## Key Mapping
 
 If you defined a keymap that puts text on the command line or waits for input,
 you may find that the command line may get cleared by the popup. This
@@ -185,7 +182,7 @@ autocmd VimEnter * g:AutoSuggestSetup({ cmd: { onspace: ['buffer'] }})
 
 [![asciicast](https://asciinema.org/a/XeuHijghtC9XmbNVu5EKzdmeH.svg)](https://asciinema.org/a/XeuHijghtC9XmbNVu5EKzdmeH)
 
-# Performance
+## Performance
 
 Care is taken to ensure that responsiveness does not deteriorate when
 searching large files or expanding wildcards. Large files are searched in
@@ -193,7 +190,7 @@ batches. Between each search attempt input keystrokes are allowed to be queued
 into Vim's main loop. Wildcard expansions are first executed in a separate job
 and aborted after a timeout.
 
-# Contributing
+## Contributing
 
 Pull requests are welcome.
 
