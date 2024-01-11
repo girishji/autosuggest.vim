@@ -2,6 +2,14 @@
 
 Autocompletion for Vim's Cmdline Mode. This unobtrusive plugin opens a popup menu of candidate items during search (`/`, `?`) and command (`:`) execution.
 
+<p>
+  <a href="#key-features">Key Features</a> •
+  <a href="#requirements">Requirements</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#configuration">Configuration</a>
+</p>
+
+
 ## Key Features
 
 - Preview candidates for search autocompletion and command autocompletion.
@@ -147,7 +155,7 @@ group (`:h hl-WildMenu`) can be used.
 Set `ignorecase` and `smartcase` using `set` command. See `:h 'ignorecase'` and
 `h 'smartcase'`.
 
-## Key Mapping
+### Key Mapping
 
 If you defined a keymap that puts text on the command line or waits for input,
 you may find that the command line may get cleared by the popup. This
