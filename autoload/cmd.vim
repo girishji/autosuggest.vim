@@ -25,7 +25,14 @@ def PopupCreate()
         border: [0, 0, 0, 0],
         filtermode: 'c',
         hidden: true,
-        filter: (_, _) => {
+        filter: (_, key: string) => {
+            if key ==? "\<c-n>"
+                feedkeys("\<tab>", 'tn')
+                return true
+            elseif key ==? "\<c-p>"
+                feedkeys("\<s-tab>", 'tn')
+                return true
+            endif
             popup_winid->popup_hide()
             :redraw
             CmdlineEnable()
