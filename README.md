@@ -4,10 +4,13 @@ Autocompletion for Vim's Cmdline Mode. This unobtrusive plugin opens a popup men
 
 ## Key Features
 
-- Preview searchable words and commands (and their arguments).
-- Search multiple words, even across line boundary; Fuzzy search.
-- All Vim idioms work as before. No surprises.
-- Fast, does not hang up when searching large files or expanding wildcards.
+- Preview candidates for search autocompletion and command autocompletion.
+- Switch between normal popup menu and flat menu.
+- Autocomplete multiple words during search; Fuzzy search.
+- All Vim idioms work as expected. No surprises.
+- Does not hang or slow down when searching large files or expanding wildcards.
+- Search-highlighting, incremental-search, and history recall work as expected.
+- Written in Vim9script.
   
 ## Usage
 
@@ -38,16 +41,6 @@ Vim's default keybindings are not altered in any way.
 
 [![asciicast](https://asciinema.org/a/DrvlJnoumCA9jWuMH8WGBCVJz.svg)](https://asciinema.org/a/DrvlJnoumCA9jWuMH8WGBCVJz)
 
-## Features
-
-- Will not hang under any circumstance (including `**` wildcards)
-- Autocomplete command names, arguments, Vimscript functions, and variables.
-- Switch between normal popup menu and flat menu.
-- `[c|d|y]/{pattern}` commands (copy/delete/yank) work as expected.
-- Search-highlighting, incremental-search, and history recall work as expected.
-- Distinguishes between forward (`/`) and reverse (`?`) search.
-- Fuzzy search option.
-- Written in Vim9script for ease of maintenance.
 
 ## Requirements
 
