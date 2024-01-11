@@ -8,22 +8,23 @@ Autocompletion for Vim's Cmdline Mode. This unobtrusive plugin opens a popup men
 - Search multiple words, even across line boundary; Fuzzy search.
 - All Vim idioms work as before. No surprises.
 - Fast, does not hang up when searching large files or expanding wildcards.
-- 
+  
 ## Usage
 
-- Search using `/` or `?` or enter commands using `:` as usual.
-- `<Tab>` and `<Shift-tab>` will select menu items.
-- `<Ctrl-E>` dismisses popup menu.
-- `<Enter>` accepts selection, and `<Esc>` dismisses search.
-- `<Ctrl-C>` will force popup menu to close.
+Vim's default keybindings are not altered in any way.
 
-__Multiword Search__
+- `/` or `?` to search forward/backward.
+- `:` to enter commands.
+- `<Tab>` and `<Shift-tab>` (or `<Ctrl-N>` and `<Ctrl-P>`) to select menu items.
+- `<Ctrl-E>` to dismiss popup menu.
+- `<Enter>` to accept selection, and `<Esc>` to dismiss search.
+- `<Ctrl-C>` to force close popup menu.
 
-- Type the character between words (like `<Space>`) after the first word to include the second word in search.
-- Type `\n` at the end of the last word in a line to continue to next line.
-- Available only when fuzzy option is not selected.
+> [!NOTE]
+> For multi-word search, type the separator character (like `<Space>`) after the first word to trigger autocompletion for second word. Type `\n` at the end of the last word in a line to continue to next line. Setting fuzzy search option disables this feature.
 
-For insert-mode autocompletion see [Vimcomplete](https://github.com/girishji/vimcomplete).
+> [!NOTE]
+> For insert-mode autocompletion see [Vimcomplete](https://github.com/girishji/vimcomplete).
 
 ### Search
 
