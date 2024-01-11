@@ -55,22 +55,47 @@ Vim's default keybindings are not altered in any way.
 
 ## Installation
 
-Install using [vim-plug](https://github.com/junegunn/vim-plug):
+Install it via [vim-plug](https://github.com/junegunn/vim-plug).
 
-```
+<details><summary><b>Show instructions</b></summary>
+
+Using vim9 script:
+
+```vim
 vim9script
 plug#begin()
 Plug 'girishji/autosuggest.vim'
 plug#end()
 ```
 
-Legacy script:
+Using legacy script:
 
-```
+```vim
 call plug#begin()
 Plug 'girishji/autosuggest.vim'
 call plug#end()
 ```
+
+</details>
+
+Install using Vim's built-in package manager.
+
+<details><summary><b>Show instructions</b></summary>
+
+```bash
+$ mkdir -p $HOME/.vim/pack/downloads/opt
+$ cd $HOME/.vim/pack/downloads/opt
+$ git clone https://github.com/girishji/autosuggest.vim
+```
+
+Add the following line to your $HOME/.vimrc file (for builtin package manager only).
+
+```vim
+packadd autosuggest.vim
+```
+
+</details>
+
 
 ## Configuration
 
