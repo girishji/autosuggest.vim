@@ -1,6 +1,6 @@
 # autosuggest.vim
 
-Autocompletion for Vim's Cmdline Mode. This unobtrusive plugin opens a popup menu of candidate items during search (`/`, `?`) and command (`:`) execution.
+Autocompletion for Vim's Cmdline Mode (`/`, `?` to search and `:` to execute a command).
 
 <p>
   <a href="#key-features">Key Features</a> •
@@ -12,10 +12,11 @@ Autocompletion for Vim's Cmdline Mode. This unobtrusive plugin opens a popup men
 
 ## Key Features
 
-- Preview candidates for search autocompletion and command autocompletion.
+- Preview candidates for search pattern autocompletion and command autocompletion.
 - Switch between normal popup menu and flat menu.
-- Autocomplete multiple words during search; Fuzzy search.
-- All Vim idioms work as expected. No surprises.
+- Autocomplete multiple words during search.
+- Fuzzy search.
+- All Vim idioms work as expected (ex. 'c', 'y', 'd' with pattern).
 - Does not hang or slow down when searching large files or expanding wildcards.
 - Search-highlighting, incremental-search, and history recall work as expected.
 - Written in Vim9script.
