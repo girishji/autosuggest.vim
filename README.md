@@ -1,6 +1,6 @@
 # autosuggest.vim
 
-Autocompletion for Vim's Cmdline Mode (`/`, `?` to search and `:` to enter a command).
+#### Autocompletion for Vim's Cmdline Mode (`/`, `?`, and `:` commands).
 
 <p>
   <a href="#key-features">Key Features</a> •
