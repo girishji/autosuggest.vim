@@ -6,7 +6,8 @@ Autocompletion for Vim's Cmdline Mode (`/`, `?` to search and `:` to enter a com
   <a href="#key-features">Key Features</a> •
   <a href="#requirements">Requirements</a> •
   <a href="#installation">Installation</a> •
-  <a href="#configuration">Configuration</a>
+  <a href="#configuration">Configuration</a> •
+  <a href="#commands">Commands</a>
 </p>
 
 
@@ -134,14 +135,6 @@ follows.
 autocmd VimEnter * g:AutoSuggestSetup(options)
 ```
 
-### Commands
-
- Enable or disable this plugin:
-
-- `:AutoSuggestEnable`
-- `:AutoSuggestDisable`
-
-
 ### Highlight Groups
 
 The `AS_SearchCompletePrefix` highlight group influences the fragment of a menu item that matches the text being searched. By default, it is linked to the highlight group `Special`. The appearance of the popup menu is determined by Vim's highlight groups `Pmenu`, `PmenuSel`, `PmenuSbar`, and `PmenuThumb`. For command completion, the `WildMenu` group (refer to `:h hl-WildMenu`) can be utilized.
@@ -208,6 +201,14 @@ searching large files or expanding wildcards. Large files are searched in
 batches. Between each search attempt input keystrokes are allowed to be queued
 into Vim's main loop. Wildcard expansions are first executed in a separate job
 and aborted after a timeout.
+
+## Commands
+
+ Enable or disable this plugin:
+
+- `:AutoSuggestEnable`
+- `:AutoSuggestDisable`
+
 
 ## Contributing
 
