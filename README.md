@@ -42,19 +42,6 @@ Vim's default keybindings are not altered in any way.
 > [!NOTE]
 > For insert-mode autocompletion see [Vimcomplete](https://github.com/girishji/vimcomplete).
 
-### Search
-
-[![asciicast](https://asciinema.org/a/dGNdbLbsTMSdaL8E4PonxQDKL.svg)](https://asciinema.org/a/dGNdbLbsTMSdaL8E4PonxQDKL)
-
-### Command
-
-[![asciicast](https://asciinema.org/a/eGWd650BZa7uiRi6lv76qYMRG.svg)](https://asciinema.org/a/eGWd650BZa7uiRi6lv76qYMRG)
-
-### Popup Menu over Statusline
-
-[![asciicast](https://asciinema.org/a/DrvlJnoumCA9jWuMH8WGBCVJz.svg)](https://asciinema.org/a/DrvlJnoumCA9jWuMH8WGBCVJz)
-
-
 ## Requirements
 
 - Vim >= 9.0
