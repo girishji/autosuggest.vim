@@ -1,8 +1,8 @@
-# autosuggest.vim
+<h1 align="center"> autosuggest.vim </h1>
 
-#### Autocompletion for Vim's Cmdline Mode (`/`, `?`, and `:` commands).
+<h4 align="center"> Autocompletion for Vim's Cmdline Mode (`/`, `?`, and `:` commands). </h4>
 
-<p>
+<p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#usage">Usage</a> •
   <a href="#requirements">Requirements</a> •
