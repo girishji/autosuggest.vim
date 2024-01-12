@@ -11,6 +11,7 @@
   <a href="#commands">Commands</a>
 </p>
 
+![demo](img/demo.gif)
 
 ## Key Features
 
