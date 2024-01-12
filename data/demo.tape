@@ -55,67 +55,42 @@
 #   Hide                            Hide the subsequent commands from the output
 #   Show                            Show the subsequent commands in the output
 
-Output ../img/demo.gif
+Output demo.gif
 
 Set Margin 10
 Set MarginFill "#674EFF"
 Set BorderRadius 10
 Set Padding 10
 
-Set TypingSpeed 200ms
+Set TypingSpeed 500ms
 Set FontSize 20
 Set Width 1000
 Set Height 600
 Set Shell "zsh"
 
-Type "vi" Sleep 500ms Enter
-Type ":e **" Sleep 1
-Type "R" Sleep 500ms Enter
-Type@1ms "gg"
-Type@500ms "/sea" Sleep 1 Tab Sleep 500ms Enter
-Type@500ms "/mu" Sleep 1 Tab Sleep 500ms Space Sleep 1 Tab Sleep 500ms Enter
+Type "vi" Sleep 1s Enter
+Type@500ms ":e **/" Sleep 2
+Ctrl+p Sleep 1 Enter
+Type@1ms "gg" Sleep 2
+Type "/" Sleep 2
+Type "sea" Sleep 2 Tab 2 Sleep 3s Enter
+Type "/" Sleep 2
+Type "mu" Sleep 2 Tab 1 Sleep 1s
+Type "-" Sleep 2 Tab Space Sleep 2 Tab Sleep 2s Enter Sleep 3
 
-Type@300ms ":e **/a" Sleep 1 Tab 3 Sleep 500ms Enter
-Type@300ms ":e **/a" Sleep 1 Tab 2 Sleep 500ms Enter
+Type ":e **/a" Sleep 2 Tab 3 Sleep 1s Enter
+Type ":e **/a" Sleep 2 Tab 2 Sleep 1s Enter
+Type ":buf" Sleep 1 Tab 2 Sleep 2s Space Sleep 2s Tab Sleep 3s Enter
 
+Type ":h getp" Sleep 2 Tab 2 Sleep 1s Enter Sleep 3
+Type ":bd" Sleep 2s Enter
+Type ":hi spel" Sleep 2s Tab 3 Enter Sleep 3 Enter
 
-Type "i" Sleep 1
-Type "cla" Sleep 1 Tab Sleep 1 Space
-Type "Fibonacci" Sleep 500ms Tab
-Sleep 1 Tab Sleep 1
-Type '"' Sleep 1 Tab Sleep 1 Space
-Type "F" Sleep 1 Tab Sleep 1 Space
-Type "series" Sleep 1 Escape
-Type "odefs" Sleep 1 Tab Sleep 1 Space
-Type "get" Sleep 1 Tab
-Type "n" Sleep 1 Tab
-Type "n1, n2, n3 = 0, 1, 1" Sleep 1 Enter
-Type "for" Sleep 1 Tab Sleep 1 Space
-Type "_" Sleep 1 Tab
-Type "range(n)" Sleep 1 Tab
-Type "n3 = n1 + n2" Enter
-Type "n1, n2 = n2, n3" Enter
-Backspace
-Type "retu" Sleep 1 Tab Sleep 1 Space
-Type "n3" Sleep 1 Enter 2
-Type "# Wr" Sleep 1 Tab Space
-Type "some tests." Enter
-Type "# I'll use an abbr" Sleep 1 Tab Backspace 2 Space
-Type "to insert boilerplate code." Sleep 1 Escape
-Type "?get" Sleep 1 Enter
-Type "o'''" Sleep 2 Tab Sleep 1 Space
-Type "1" Sleep 1 Escape
-Type "o1" Sleep 1 Escape Up
-Type "2yy" Sleep 1 Down
-Type "p" Sleep 1 Down
-Type "p" Sleep 3
-Type "f1r8" Sleep 2 Down
-Type "s34" Sleep 1 Escape
-Type "?1" Sleep 1 Enter
-Type "r2" Sleep 1
-Type "nr2" Sleep 1
-Type ":w | new | r !python3 #" Sleep 2 Enter
-Sleep 2
-Type ":Tests passed!" Sleep 2
+Type ":call g:A" Sleep 2 Tab 2
+Type "#{search: #{pum: v:false}})" Sleep 2 Enter
+Type "/" Sleep 2
+Type "auto" Sleep 2 Tab 3 Sleep 3s Enter
+
+Type@300ms ":That's all!" Sleep 1
 Ctrl+u
-Type ":qa" Enter
+Type@200ms ":qa" Enter
