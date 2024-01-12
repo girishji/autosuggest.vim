@@ -201,12 +201,6 @@ nnoremap <leader>b :buffer<space>
 autocmd VimEnter * g:AutoSuggestSetup({ cmd: { onspace: ['buffer'] }})
 ```
 
-<details><summary><b>Show demo</b></summary>
-<br>
-[![asciicast](https://asciinema.org/a/XeuHijghtC9XmbNVu5EKzdmeH.svg)](https://asciinema.org/a/XeuHijghtC9XmbNVu5EKzdmeH)
-
-</details>
-
 ### Performance
 
 Care is taken to ensure that responsiveness does not deteriorate when
