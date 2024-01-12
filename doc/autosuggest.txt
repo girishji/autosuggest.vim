@@ -16,7 +16,6 @@ CONTENTS                                            *autosuggest-contents*
 ==============================================================================
 1. Overview					*autosuggest-overview*
 
-Wouldn't it be nice to have autocomplete during search and command execution?
 This unobtrusive plugin simply opens a popup menu and shows autocompletion
 options when you search (`/`, `?`) or enter commands (`:`) in
 commandline-mode.
