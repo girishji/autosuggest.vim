@@ -1,6 +1,6 @@
 # autosuggest.vim
 
-Autocompletion for Vim's Cmdline Mode (`/`, `?` to search and `:` to execute a command).
+Autocompletion for Vim's Cmdline Mode (`/`, `?` to search and `:` to enter a command).
 
 <p>
   <a href="#key-features">Key Features</a> •
@@ -25,15 +25,16 @@ Autocompletion for Vim's Cmdline Mode (`/`, `?` to search and `:` to execute a c
 
 Vim's default keybindings are not altered in any way.
 
-- `/` or `?` to search forward/backward.
+- `/` or `?` to search forward or backward.
 - `:` to enter commands.
 - `<Tab>` and `<Shift-tab>` (or `<Ctrl-N>` and `<Ctrl-P>`) to select menu items.
 - `<Ctrl-E>` to dismiss popup menu.
-- `<Enter>` to accept selection, and `<Esc>` to dismiss search.
+- `<Enter>` to accept selection.
+- `<Esc>` to dismiss search.
 - `<Ctrl-C>` to force close popup menu.
 
 > [!NOTE]
-> For multi-word search, type the separator character (like `<Space>`) after the first word to trigger autocompletion for second word. Type `\n` at the end of the last word in a line to continue to next line. Setting fuzzy search option disables this feature.
+> For multi-word search, type the separator character (like `<Space>`) after the first word to trigger autocompletion for second word. Type `\n` at the end of the last word in a line to continue to next line. Setting fuzzy search option disables multi-word search.
 
 > [!NOTE]
 > For insert-mode autocompletion see [Vimcomplete](https://github.com/girishji/vimcomplete).
@@ -103,17 +104,15 @@ packadd autosuggest.vim
 
 ## Configuration
 
-### Options
-
-Default options are as follows.
+Default options are as follows:
 
 ```
 vim9script
 var options = {
     search: {
         enable: true,   # 'false' will disable search completion
-        maxheight: 12,  # line count of stacked menu
         pum: true,      # 'false' for flat menu, 'true' for stacked menu
+        maxheight: 12,  # max height of stacked menu in lines
         fuzzy: false,   # fuzzy completion
         alwayson: true, # when 'false' press <tab> to open popup menu
     },
@@ -121,8 +120,8 @@ var options = {
         enable: true,   # 'false' will disable command completion
         pum: true,      # 'false' for flat menu, 'true' for stacked menu
         fuzzy: false,   # fuzzy completion
-        exclude: [],    # keywords excluded from completion (use \c for ignorecase)
-        onspace: [],    # show popup menu after keyword+space (ex. :buffer<space>, etc.)
+        exclude: [],    # patterns to exclude from command completion (use \c for ignorecase)
+        onspace: [],    # show popup menu when cursor is in front of space (ex. :buffer<space>)
     }
 }
 ```
@@ -137,7 +136,7 @@ autocmd VimEnter * g:AutoSuggestSetup(options)
 
 ### Commands
 
- _Enable and disable this plugin_
+ Enable or disable this plugin:
 
 - `:AutoSuggestEnable`
 - `:AutoSuggestDisable`
@@ -145,11 +144,8 @@ autocmd VimEnter * g:AutoSuggestSetup(options)
 
 ### Highlight Groups
 
-Highlight group `AS_SearchCompletePrefix` affects style of the fragment of menu item
-that matches text being searched. By default it is linked to highlight group `Special`.
-Popup menu appearance is determined by Vim's highlight groups `Pmenu`,
-`PmenuSel`, `PmenuSbar` and `PmenuThumb`. For command completion `WildMenu`
-group (`:h hl-WildMenu`) can be used.
+The `AS_SearchCompletePrefix` highlight group influences the fragment of a menu item that matches the text being searched. By default, it is linked to the highlight group `Special`. The appearance of the popup menu is determined by Vim's highlight groups `Pmenu`, `PmenuSel`, `PmenuSbar`, and `PmenuThumb`. For command completion, the `WildMenu` group (refer to `:h hl-WildMenu`) can be utilized.
+
 
 ### Case Sensitive Search
 
@@ -202,14 +198,16 @@ search and use `<tab>` to choose from menu.
 ```
 nnoremap <leader>f :e<space>**/*<left>
 nnoremap <leader>b :buffer<space>
-
-# Set the following option
 autocmd VimEnter * g:AutoSuggestSetup({ cmd: { onspace: ['buffer'] }})
 ```
 
+<details><summary><b>Show demo</b></summary>
+<br>
 [![asciicast](https://asciinema.org/a/XeuHijghtC9XmbNVu5EKzdmeH.svg)](https://asciinema.org/a/XeuHijghtC9XmbNVu5EKzdmeH)
 
-## Performance
+</details>
+
+### Performance
 
 Care is taken to ensure that responsiveness does not deteriorate when
 searching large files or expanding wildcards. Large files are searched in
@@ -221,7 +219,7 @@ and aborted after a timeout.
 
 Pull requests are welcome.
 
-# Similar Plugins
+## Similar Plugins
 
 - [cmp-cmdline](https://github.com/hrsh7th/cmp-cmdline)
 - [wilder.nvim](https://github.com/gelguy/wilder.nvim)
