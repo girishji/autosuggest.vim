@@ -17,6 +17,7 @@ def NewPopup(isfwd: bool): dict<any>
         isfwd: isfwd,	    # true for '/' and false for '?'
         starttime: [],	    # timestamp at which search started
         firstmatch: [],	    # workaround for vim bug 12538
+        cursorpos: [],      # cached cursor position when command is first invoked
     }
     popup->extend({
         completeWord: function(CompleteWord, [popup]),
@@ -264,10 +265,9 @@ def SearchWorker(popup: dict<any>, attr: dict<any>, timer: number)
     endif
 
     var interval = attr.intervals[attr.index]
-    var cursorpos = [line('.'), col('.')]
     cursor(interval.startl, interval.startc)
     var matches = p.bufMatches(interval)
-    cursor(cursorpos)
+    cursor(p.cursorpos)
 
     # Add matched fragments to list of candidates and segregate
     var candidates = timediff > 0 ? matches : p.candidates + matches
@@ -433,6 +433,7 @@ def Filter(winid: number, key: string): bool
         clearmatches()
         p.winid->popup_hide()
         EnableCmdline()
+        p.firstmatch = []
         p.updateMenu(key)
         return false # Let vim's usual mechanism (ex. search highlighting) handle this
     endif
@@ -471,6 +472,9 @@ def CompleteWord(popup: dict<any>)
         endif
         p.winid = popup_menu([], attr)
     endif
+    # Cache the cursor position
+    p.cursorpos = [line('.'), col('.')]
+
     p.updateMenu('')
 enddef
 
