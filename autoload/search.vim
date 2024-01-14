@@ -264,10 +264,11 @@ def SearchWorker(popup: dict<any>, attr: dict<any>, timer: number)
         return
     endif
 
+    var cursorpos = [line('.'), col('.')]
     var interval = attr.intervals[attr.index]
     cursor(interval.startl, interval.startc)
     var matches = p.bufMatches(interval)
-    cursor(p.cursorpos)
+    cursor(cursorpos)
 
     # Add matched fragments to list of candidates and segregate
     var candidates = timediff > 0 ? matches : p.candidates + matches
@@ -432,9 +433,10 @@ def Filter(winid: number, key: string): bool
     else
         clearmatches()
         p.winid->popup_hide()
-        EnableCmdline()
+        cursor(p.cursorpos)
         p.firstmatch = []
         p.updateMenu(key)
+        EnableCmdline()
         return false # Let vim's usual mechanism (ex. search highlighting) handle this
     endif
     return true
@@ -472,9 +474,9 @@ def CompleteWord(popup: dict<any>)
         endif
         p.winid = popup_menu([], attr)
     endif
-    # Cache the cursor position
-    p.cursorpos = [line('.'), col('.')]
 
+    p.cursorpos = [line('.'), col('.')] # Cache the cursor position
+    p.firstmatch = []
     p.updateMenu('')
 enddef
 
