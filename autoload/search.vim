@@ -27,11 +27,18 @@ def NewPopup(isfwd: bool): dict<any>
         bufFuzzyMatches: function(BufFuzzyMatches, [popup]),
         showPopupMenu: function(ShowPopupMenu, [popup]),
     })
-    # Due to vim issue 12538 highlighting has to be provoked explicitly during
+    # XXX:
+    # Issue #1: Due to vim issue 12538 highlighting has to be provoked explicitly during
     # async search. The redraw command causes some flickering of highlighted
     # text. So do async search only when file is large.
+    # Issue #2: Currently there is a unfixable problem during highlighting
+    # where searching does not remove previous highlights until <cr> is typed.
+    # Cannot remove highlighting manually either since clearmatches() does
+    # nothing and getmatches() returns an empty list (when there is
+    # highlighting visible on the screen). This is another Vim bug. Async
+    # 'works' except for this annoyance. Enable async only on large buffers.
     if options.async
-        popup->extend({async: (line('$') < options.range ? false : true)})
+        popup->extend({async: (line('$') < 1500 ? false : true)})
         options.timeout = 2000
     else
         popup->extend({async: false})
@@ -53,9 +60,10 @@ def Init()
 enddef
 
 def Clear()
+    ## Problem seems to have gone away in new release.
     ## To fix Vim bug #12634
-    completor.winid->popup_move({ pos: 'center' })
-    :redraw
+    # completor.winid->popup_move({ pos: 'center' })
+    # :redraw
     ##
     completor.winid->popup_close()
     completor = {}
@@ -283,11 +291,11 @@ def SearchWorker(popup: dict<any>, attr: dict<any>, timer: number)
         p.showPopupMenu()
         # Workaround for vim bug 12538: Explicitly call matchadd and matchaddpos
         # https://github.com/vim/vim/issues/12538
-        if &hlsearch
+        if p.async && &hlsearch
             matchadd('Search', &ignorecase ? $'\c{p.context}' : p.context, 11)
             :redraw
         endif
-        if p.async && &incsearch && p.firstmatch != []
+        if p.async && &incsearch && !p.firstmatch->empty()
             matchaddpos('IncSearch', [p.firstmatch], 12)
             :redraw
         endif

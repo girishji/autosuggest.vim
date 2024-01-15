@@ -1,3 +1,5 @@
+# Run this script from autosuggest.vim dir
+
 # VHS documentation
 #
 # Output:
@@ -77,6 +79,7 @@ Type "sea" Sleep 2 Tab 2 Sleep 3s Enter
 Type "/" Sleep 2
 Type "mu" Sleep 2 Tab 1 Sleep 1s
 Type "-" Sleep 2 Tab Space Sleep 2 Tab Sleep 2s Enter Sleep 3
+Escape # remove highlighting
 
 Type ":e **/a" Sleep 2 Tab 3 Sleep 1s Enter
 Type ":e **/a" Sleep 2 Tab 2 Sleep 1s Enter
