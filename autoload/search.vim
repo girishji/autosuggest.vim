@@ -16,7 +16,7 @@ def NewPopup(isfwd: bool): dict<any>
         context: '',	    # cached cmdline contents
         isfwd: isfwd,	    # true for '/' and false for '?'
         starttime: [],	    # timestamp at which search started
-        firstmatch: [],	    # workaround for vim bug 12538
+        firstmatch: [],	    # workaround for vim issue 12538
         cursorpos: [],      # cached cursor position when command is first invoked
     }
     popup->extend({
@@ -27,7 +27,7 @@ def NewPopup(isfwd: bool): dict<any>
         bufFuzzyMatches: function(BufFuzzyMatches, [popup]),
         showPopupMenu: function(ShowPopupMenu, [popup]),
     })
-    # Due to vim bug 12538 highlighting has to be provoked explicitly during
+    # Due to vim issue 12538 highlighting has to be provoked explicitly during
     # async search. The redraw command causes some flickering of highlighted
     # text. So do async search only when file is large.
     if options.async
@@ -46,6 +46,9 @@ def Init()
     EnableCmdline()
     if !options.pum && options.hidestatusline
         opt.SaveStatusLine()
+    endif
+    if &incsearch
+        completor.cursorpos = [line('.'), col('.')] # Cache the cursor position
     endif
 enddef
 
@@ -122,7 +125,7 @@ enddef
 def BufMatches(popup: dict<any>, interval: dict<any>): list<any>
     var p = popup
     var flags = p.async ? (p.isfwd ? '' : 'b') : (p.isfwd ? 'w' : 'wb')
-    if p.async && p.firstmatch == [] # find first match to highlight (vim bug 12538)
+    if p.async && &incsearch && p.firstmatch == [] # find first match to highlight (vim issue 12538)
         try
             var [lnum, cnum] = p.context->searchpos(flags, interval.stopl)
             if [lnum, cnum] != [0, 0]
@@ -284,7 +287,7 @@ def SearchWorker(popup: dict<any>, attr: dict<any>, timer: number)
             matchadd('Search', &ignorecase ? $'\c{p.context}' : p.context, 11)
             :redraw
         endif
-        if &incsearch && p.firstmatch != []
+        if p.async && &incsearch && p.firstmatch != []
             matchaddpos('IncSearch', [p.firstmatch], 12)
             :redraw
         endif
@@ -297,6 +300,8 @@ enddef
 # Populate popup menu and display it.
 def UpdateMenu(popup: dict<any>, key: string)
     var p = popup
+    cursor(p.cursorpos)
+    p.firstmatch = []
     var context = getcmdline()->strpart(0, getcmdpos() - 1) .. key
     # https://github.com/girishji/autosuggest.vim/issues/2: `\` causes errors in searchpos()
     if context == '' || context =~ '^\s\+$' || context =~ '\'
@@ -433,8 +438,6 @@ def Filter(winid: number, key: string): bool
     else
         clearmatches()
         p.winid->popup_hide()
-        cursor(p.cursorpos)
-        p.firstmatch = []
         p.updateMenu(key)
         EnableCmdline()
         return false # Let vim's usual mechanism (ex. search highlighting) handle this
@@ -475,8 +478,6 @@ def CompleteWord(popup: dict<any>)
         p.winid = popup_menu([], attr)
     endif
 
-    p.cursorpos = [line('.'), col('.')] # Cache the cursor position
-    p.firstmatch = []
     p.updateMenu('')
 enddef
 
