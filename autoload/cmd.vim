@@ -6,6 +6,7 @@ import autoload './options.vim' as opt
 
 var options = opt.options.cmd
 var popup_winid: number
+var abbreviations: list<any>
 
 def CmdlineEnable()
     autocmd! CmdCompleteAutocmds CmdlineChanged : Complete()
@@ -181,6 +182,7 @@ enddef
 
 def Init()
     PopupCreate()
+    abbreviations = GetAbbrevs()
     CmdlineEnable()
     if !options.pum && options.hidestatusline
         opt.SaveStatusLine()
@@ -194,6 +196,19 @@ def Clear()
     ##
     popup_winid->popup_close()
     opt.RestoreStatusLine()
+    abbreviations = []
+enddef
+
+def GetAbbrevs(): list<any>
+    var lines = execute('ca', 'silent!')
+    if lines =~? 'No abbreviation found'
+        return []
+    endif
+    var abb = []
+    for line in lines->split("\n")
+        abb->add(line->matchstr('\v^c\s+\zs\S+\ze'))
+    endfor
+    return abb
 enddef
 
 def Complete()
@@ -201,9 +216,15 @@ def Complete()
         return
     endif
     var context = getcmdline()->strpart(0, getcmdpos() - 1)
-    if context == '' || context =~ '^\s\+$' ||
-            (options.onspace->index(context->trim()) == -1 && context[-1] =~ '\s')
+    if context == '' || context =~ '^\s\+$'
         return
+    endif
+    # ignore cmdline abbreviations and such
+    if context[-1] =~ '\s'
+        var prompt = context->trim()
+        if abbreviations->index(prompt) != -1 || options.onspace->index(prompt) == -1
+            return
+        endif
     endif
     var delay = max([10, options.delay])
     timer_start(delay, function(DoComplete, [context]))
