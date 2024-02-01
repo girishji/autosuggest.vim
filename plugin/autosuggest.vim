@@ -45,6 +45,6 @@ enddef
 command! AutoSuggestEnable  AutoSuggestEnable(true)
 command! AutoSuggestDisable AutoSuggestEnable(false)
 
-highlight default link AS_SearchCompletePrefix    Special
+highlight default AS_SearchCompletePrefix cterm=bold term=bold gui=bold
 
 # vim: tabstop=8 shiftwidth=4 softtabstop=4

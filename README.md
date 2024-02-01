@@ -126,7 +126,7 @@ autocmd VimEnter * g:AutoSuggestSetup(options)
 
 ### Highlight Groups
 
-The `AS_SearchCompletePrefix` highlight group influences the fragment of a menu item that matches the text being searched. By default, it is linked to the highlight group `Special`. The appearance of the popup menu is determined by Vim's highlight groups `Pmenu`, `PmenuSel`, `PmenuSbar`, and `PmenuThumb`. For command completion, the `WildMenu` group (refer to `:h hl-WildMenu`) can be utilized.
+The `AS_SearchCompletePrefix` highlight group influences the fragment of a menu item that matches the text being searched. The appearance of the popup menu is determined by Vim's highlight groups `Pmenu`, `PmenuSel`, `PmenuSbar`, and `PmenuThumb`. For command completion, the `WildMenu` group (refer to `:h hl-WildMenu`) can be utilized.
 
 
 ### Case Sensitive Search
