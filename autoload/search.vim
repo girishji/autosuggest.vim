@@ -315,7 +315,7 @@ def UpdateMenu(popup: dict<any>, key: string)
     if context == '' || context =~ '^\s\+$' || context =~ '\'
         return
     endif
-    p.context = context
+    p.context = context->escape('~\')
     p.starttime = reltime()
     p.candidates = []
     p.keywords = []
