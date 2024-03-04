@@ -9,9 +9,9 @@ vim9script
 
 g:loaded_autosuggest = true
 
-import autoload '../autoload/options.vim' as opt
-import autoload '../autoload/search.vim' as ser
-import autoload '../autoload/cmd.vim'
+import autoload '../autoload/autosuggest/options.vim' as opt
+import autoload '../autoload/autosuggest/search.vim' as ser
+import autoload '../autoload/autosuggest/cmd.vim'
 
 def Reset()
     ser.Teardown()
