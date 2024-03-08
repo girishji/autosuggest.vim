@@ -204,13 +204,25 @@ and aborted after a timeout.
 - `:AutoSuggestEnable`
 - `:AutoSuggestDisable`
 
+## Other Plugins to Enhance Your Workflow
 
-## Contributing
+1. [**devdocs.vim**](https://github.com/girishji/devdocs.vim) - browse documentation from [devdocs.io](https://devdocs.io).
 
-Pull requests are welcome.
+2. [**easyjump.vim**](https://github.com/girishji/easyjump.vim) - makes code navigation a breeze.
+
+3. [**fFtT.vim**](https://github.com/girishji/fFtT.vim) - accurately target words in a line.
+
+4. [**scope.vim**](https://github.com/girishji/scope.vim) - fuzzy find anything.
+
+5. [**vimcomplete**](https://github.com/girishji/vimcomplete) - enhances autocompletion in Vim.
 
 ## Similar Plugins
 
 - [cmp-cmdline](https://github.com/hrsh7th/cmp-cmdline)
 - [wilder.nvim](https://github.com/gelguy/wilder.nvim)
 - [sherlock](https://github.com/vim-scripts/sherlock.vim)
+
+## Contributing
+
+Pull requests are welcome.
+
