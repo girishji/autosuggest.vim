@@ -65,14 +65,14 @@ Set BorderRadius 10
 Set Padding 10
 
 Set TypingSpeed 500ms
-Set FontSize 20
+Set FontSize 18
 Set Width 1000
 Set Height 600
 Set Shell "zsh"
 
-Type "vi" Sleep 1s Enter
+Type@200ms "vi -n" Sleep 2s Enter
 Type@500ms ":e **/" Sleep 2
-Ctrl+p Sleep 1 Enter
+Ctrl+p Sleep 3 Enter
 Type@1ms "gg" Sleep 2
 Type "/" Sleep 2
 Type "sea" Sleep 2 Tab 2 Sleep 3s Enter
@@ -82,7 +82,7 @@ Type "-" Sleep 2 Tab Space Sleep 2 Tab Sleep 2s Enter Sleep 3
 Escape # remove highlighting
 
 Type ":e **/a" Sleep 2 Tab 3 Sleep 1s Enter
-Type ":e **/a" Sleep 2 Tab 2 Sleep 1s Enter
+Type ":e **/a" Sleep 2 Tab 4 Sleep 1s Enter
 Type ":buf" Sleep 1 Tab 2 Sleep 2s Space Sleep 2s Tab Sleep 3s Enter
 
 Type ":h getp" Sleep 2 Tab 2 Sleep 1s Enter Sleep 3
@@ -97,3 +97,4 @@ Type "auto" Sleep 2 Tab 3 Sleep 3s Enter
 Type@300ms ":That's all!" Sleep 1
 Ctrl+u
 Type@200ms ":qa" Enter
+Sleep 2
