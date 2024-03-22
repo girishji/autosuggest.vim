@@ -308,7 +308,9 @@ enddef
 # Populate popup menu and display it.
 def UpdateMenu(popup: dict<any>, key: string)
     var p = popup
-    cursor(p.cursorpos)
+    if !p.cursorpos->empty()
+        cursor(p.cursorpos)
+    endif
     p.firstmatch = []
     var context = getcmdline()->strpart(0, getcmdpos() - 1) .. key
     # https://github.com/girishji/autosuggest.vim/issues/2: `\` causes errors in searchpos()
