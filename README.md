@@ -116,6 +116,16 @@ var options = {
 }
 ```
 
+> [!NOTE]
+> The `exclude` option mentioned above uses regex pattern match rather than
+> string comparison. For instance, if you would like to exclude `:e` from
+> autosuggestion but would like to see menu when you type `:e<space>`, then use
+> the following:
+> ```
+> exclude: ['^e$'],  # exclude ':e' but not ':e<sapce>'
+> onspace: ['e'],    # show menu when 'e:<space>' is typed
+> ```
+
 Options can be modified using `g:AutoSuggestSetup()`. If you are using
 [vim-plug](https://github.com/junegunn/vim-plug) use the `VimEnter` event as
 follows.
@@ -165,7 +175,7 @@ Include this in your options.
 ```
 var options = {
     cmd: {
-        exclude: ['buffer']
+        exclude: ['^buffer']
     }
 }
 ```
