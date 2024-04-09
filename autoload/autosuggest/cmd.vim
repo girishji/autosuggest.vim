@@ -160,11 +160,6 @@ def DoComplete(oldcontext: string, timer: number)
         # Likely pasted text or coming from keymap
         return
     endif
-    for pat in (options.exclude + options.autoexclude)
-        if context =~ pat
-            return
-        endif
-    endfor
     var completions: list<any> = []
     if Verify(context)
         completions = context->getcompletion('cmdline')
@@ -226,6 +221,11 @@ def Complete()
             return
         endif
     endif
+    for pat in (options.exclude + options.autoexclude)
+        if context =~ pat
+            return
+        endif
+    endfor
     var delay = max([10, options.delay])
     timer_start(delay, function(DoComplete, [context]))
 enddef
