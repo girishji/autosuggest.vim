@@ -1,6 +1,6 @@
 <h1 align="center"> autosuggest.vim </h1>
 
-<h4 align="center"> Autocompletion for Vim's Cmdline Mode (`/`, `?`, and `:` commands). </h4>
+<h4 align="center"> Autocompletion for Vim's Cmdline (`/`, `?`, and `:` commands). </h4>
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
