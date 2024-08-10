@@ -162,7 +162,12 @@ def DoComplete(oldcontext: string, timer: number)
     endif
     var completions: list<any> = []
     if Verify(context)
-        completions = context->getcompletion('cmdline')
+        if context =~# '\v^(e|ed|edi|edit|f|fi|fil|file) '
+            # 'file_in_path' respects wildignore, 'cmdline' does not.
+            completions = context->matchstr('^\S\+ \zs.*')->getcompletion('file_in_path')
+        else
+            completions = context->getcompletion('cmdline')
+        endif
     endif
     if completions->empty()
         return
