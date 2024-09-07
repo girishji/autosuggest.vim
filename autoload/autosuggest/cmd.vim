@@ -68,6 +68,9 @@ def PopupShow(position: number, completions: list<any>)
         hmenu->setbufline(popup_winid->winbufnr(), 1)
     endif
     popup_winid->popup_show()
+    # XXX: 'redraw' causes hiccup as characters are typed. this is noticeable
+    # when large files are open. screen redrawing should not depend on size of
+    # buffer. this needs to be investigated in vim code.
     :redraw
     CmdlineDisable()
 enddef
