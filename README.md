@@ -112,6 +112,7 @@ var options = {
         fuzzy: false,   # fuzzy completion
         exclude: [],    # patterns to exclude from command completion (use \c for ignorecase)
         onspace: [],    # show popup menu when cursor is in front of space (ex. :buffer<space>)
+        alwayson: true, # when 'false' press <tab> to open popup menu
     }
 }
 ```

@@ -9,7 +9,7 @@ var popup_winid: number
 var abbreviations: list<any>
 
 def CmdlineEnable()
-    autocmd! CmdCompleteAutocmds CmdlineChanged : Complete()
+    autocmd CmdlineChanged : options.alwayson ? Complete() : TabComplete()
 enddef
 
 def CmdlineDisable()
@@ -222,7 +222,8 @@ def Complete()
     if context[-1] =~ '\s'
         var prompt = context->trim()
         # ignore cmdline abbreviations and such
-        if abbreviations->index(prompt) != -1 || options.onspace->index(prompt) == -1
+        if abbreviations->index(prompt) != -1 ||
+                (options.alwayson && options.onspace->index(prompt) == -1)
             return
         endif
     endif
@@ -240,6 +241,14 @@ var wildsave = {
     wildmode: '',
     wildoptions: '',
 }
+
+def TabComplete()
+    var lastcharpos = getcmdpos() - 2
+    if getcmdline()[lastcharpos] ==? "\<tab>"
+        setcmdline(getcmdline()->slice(0, lastcharpos))
+        Complete()
+    endif
+enddef
 
 export def Setup()
     if options.enable
@@ -263,7 +272,7 @@ export def Setup()
         endif
         augroup CmdCompleteAutocmds | autocmd!
             autocmd CmdlineEnter   : Init()
-            autocmd CmdlineChanged : Complete()
+            autocmd CmdlineChanged : options.alwayson ? Complete() : TabComplete()
             autocmd CmdlineLeave   : Clear()
         augroup END
     endif

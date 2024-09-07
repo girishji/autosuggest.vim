@@ -23,6 +23,7 @@ export var options: dict<any> = {
         onspace: [],    # show menu for keyword+space (ex. :find , :buffer , etc.)
         timeout: 500,   # max time in ms to search when '**' is specified in path
         editcmdworkaround: false,  # make :edit respect wildignore (without using file_in_path in getcompletion() which is slow)
+        alwayson: true, # when 'false' press <tab> to open popup menu
     }
 }
 
