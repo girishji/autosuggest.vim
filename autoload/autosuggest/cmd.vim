@@ -126,6 +126,7 @@ def ShowFiles(timer: number)
 enddef
 
 # Verify that this completion does not take a long time (does not hang)
+var vjob: job
 def Verify(context: string): bool
     if context !~ '\*\*'
         return true
@@ -138,12 +139,15 @@ def Verify(context: string): bool
         timer_start(1, function(ShowFiles))
         return false
     else
+        if vjob->job_status() ==? 'run'
+            return false
+        endif
         var start = reltime()
         var cmd = ['vim', '-es', $'+:silent! call getcompletion("{context}", "cmdline") | q!']
-        var vjob: job = job_start(cmd)
+        vjob = job_start(cmd)
         while start->reltime()->reltimefloat() * 1000 < options.timeout
             if vjob->job_status() ==? 'run'
-                :sleep 5m
+                :sleep 10m
             else
                 break
             endif
