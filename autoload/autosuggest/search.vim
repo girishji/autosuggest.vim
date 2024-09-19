@@ -54,7 +54,9 @@ def Init()
     if &incsearch
         completor.cursorpos = [line('.'), col('.')] # Cache the cursor position
     endif
-    bgPopupWinId = popup_create(' ', {line: &lines - &cmdheight, col: 1, minwidth: winwidth(0)})
+    if !options.pum
+        bgPopupWinId = popup_create(' ', {line: &lines - &cmdheight, col: 1, minwidth: winwidth(0)})
+    endif
 enddef
 
 def Clear()
@@ -65,7 +67,9 @@ def Clear()
     ##
     completor.winid->popup_close()
     completor = {}
-    bgPopupWinId->popup_close()
+    if !options.pum
+        bgPopupWinId->popup_close()
+    endif
 enddef
 
 def Complete()

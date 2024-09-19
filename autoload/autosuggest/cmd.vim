@@ -88,7 +88,7 @@ def Overlap(context: string, completion: string): list<number>
     return [-1, -1]
 enddef
 
-# Retrun the column nr where popup menu should be displayed. Relevant only for
+# Return the column nr where popup menu should be displayed. Relevant only for
 # stacked popup menu (not flat menu).
 # Completion candidates for file are obtained as full path. Extract relevant
 # portion of path for display.
