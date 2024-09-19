@@ -68,9 +68,9 @@ def PopupShow(position: number, completions: list<any>)
         hmenu->setbufline(popup_winid->winbufnr(), 1)
     endif
     popup_winid->popup_show()
-    # XXX: 'redraw' causes hiccup as characters are typed. this is noticeable
-    # when large files are open. screen redrawing should not depend on size of
-    # buffer. this needs to be investigated in vim code.
+    # XXX: In v9.1(aug,2024) 'redraw' causes hiccup as characters are typed.
+    # this is noticeable when large files are open. screen redrawing should not
+    # depend on size of buffer. this needs to be investigated in vim code.
     :redraw
     CmdlineDisable()
 enddef
@@ -169,9 +169,9 @@ def DoComplete(oldcontext: string, timer: number)
     endif
     var completions: list<any> = []
     if Verify(context)
-        if context =~# '\v^(e|ed|edi|edit|f|fi|fil|file) '
+        if context =~# '\v^(e|ed|edi|edit|f|fi|fin|find)\s+'
             # 'file_in_path' respects wildignore, 'cmdline' does not.
-            completions = context->matchstr('^\S\+ \zs.*')->getcompletion('file_in_path')
+            completions = context->matchstr('^\S\+\s\+\zs.*')->getcompletion('file_in_path')
         else
             completions = context->getcompletion('cmdline')
         endif
@@ -191,9 +191,7 @@ def Init()
     PopupCreate()
     abbreviations = GetAbbrevs()
     CmdlineEnable()
-    if !options.pum && options.hidestatusline
-        opt.SaveStatusLine()
-    endif
+    opt.SaveStatusLine(options)
 enddef
 
 def Clear()
@@ -202,7 +200,7 @@ def Clear()
     :redraw
     ##
     popup_winid->popup_close()
-    opt.RestoreStatusLine()
+    opt.RestoreStatusLine(options)
     abbreviations = []
 enddef
 

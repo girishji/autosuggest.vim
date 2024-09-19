@@ -1,7 +1,5 @@
 vim9script
 
-# Autocomplete words in search command
-
 import autoload './options.vim' as opt
 
 var options = opt.options.search
@@ -51,9 +49,7 @@ var completor = {}
 def Init()
     completor = getcmdtype() == '/' ? NewPopup(true) : NewPopup(false)
     EnableCmdline()
-    if !options.pum && options.hidestatusline
-        opt.SaveStatusLine()
-    endif
+    opt.SaveStatusLine(options)
     if &incsearch
         completor.cursorpos = [line('.'), col('.')] # Cache the cursor position
     endif
@@ -67,7 +63,7 @@ def Clear()
     ##
     completor.winid->popup_close()
     completor = {}
-    opt.RestoreStatusLine()
+    opt.RestoreStatusLine(options)
 enddef
 
 def Complete()
@@ -421,7 +417,7 @@ def SelectItem(popup: dict<any>, direction: string)
     if &hlsearch
         matchadd('Search', &ignorecase ? $'\c{p.context}' : p.context, 11)
     endif
-    :redraw # Both flatmenu and vertical menu needs redraw after they change selection
+    :redraw  # needed for <tab> selected menu item highlighting to work
 enddef
 
 
@@ -430,7 +426,7 @@ enddef
 # main loop (through feedkeys).
 def Filter(winid: number, key: string): bool
     var p = completor
-    # Note: do not include arrow keys or <c-n> <c-p> since they are used for history lookup
+    # Note: do not include arrow keys since they are used for history lookup
     if key ==? "\<tab>" || key ==? "\<c-n>"
         p.selectItem('j') # next item
     elseif key ==? "\<s-tab>" || key ==? "\<c-p>"
