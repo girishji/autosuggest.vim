@@ -45,6 +45,10 @@ enddef
 command! AutoSuggestEnable  AutoSuggestEnable(true)
 command! AutoSuggestDisable AutoSuggestEnable(false)
 
-highlight default AS_SearchCompletePrefix cterm=bold term=bold gui=bold
+highlight default link AutoSuggestSearchMatch PmenuMatch
+highlight default link AutoSuggestSearchMatchSel PmenuMatchSel
+
+highlight default link AutoSuggestCmdMatch PmenuMatch
+highlight default link AutoSuggestCmdMatchSel PmenuMatchSel
 
 # vim: tabstop=8 shiftwidth=4 softtabstop=4

@@ -7,15 +7,15 @@ var options = opt.options.search
 # Encapsulate the state and operations of search menu completion.
 def NewPopup(isfwd: bool): dict<any>
     var popup = {
-        winid: -1,	    # id of popup window
-        keywords: [],	    # keywords shown in popup menu
-        candidates: [],	    # candidates for completion (could be phrases)
-        index: 0,	    # index to keywords and candidates array
-        context: '',	    # cached cmdline contents
-        isfwd: isfwd,	    # true for '/' and false for '?'
-        starttime: [],	    # timestamp at which search started
-        firstmatch: [],	    # workaround for vim issue 12538
-        cursorpos: [],      # cached cursor position when command is first invoked
+        winid: -1,             #  id of popup window
+        keywords: [],          #  keywords shown in popup menu
+        candidates: [],        #  candidates for completion (could be phrases)
+        index: 0,              #  index to keywords and candidates array
+        context: '',           #  cached cmdline contents
+        isfwd: isfwd,          #  true for '/' and false for '?'
+        starttime: [],         #  timestamp at which search started
+        firstmatch: [],        #  workaround for vim issue 12538
+        cursorpos: [],         #  cached cursor position when command is first invoked
     }
     popup->extend({
         completeWord: function(CompleteWord, [popup]),
@@ -242,6 +242,7 @@ def ShowPopupMenu(popup: dict<any>)
         var lastword = p.context->matchstr('\s*\S\+$')
         p.winid->popup_move({col: p.context->strridx(lastword) + 2})
         p.winid->popup_settext(p.keywords)
+        win_execute(p.winid, "normal! gg")
     else
         var hmenu = p.keywords->join('  ')
         if hmenu->len() > HMenuWidth()
@@ -253,8 +254,9 @@ def ShowPopupMenu(popup: dict<any>)
     p.index = -1
     p.winid->popup_setoptions({cursorline: false})
     clearmatches(p.winid)
+    selMatchId = 0
     var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}'
-    matchadd('AS_SearchCompletePrefix', mpat, 10, -1, {window: p.winid})
+    matchadd('AutoSuggestSearchMatch', mpat, 10, -1, {window: p.winid})
     p.winid->popup_show()
     if !&incsearch # redraw only when noincsearch, otherwise highlight flickers
         :redraw
@@ -327,20 +329,39 @@ def UpdateMenu(popup: dict<any>, key: string)
     else
         var cursorpos = [line('.'), col('.')]
         var matches = options.fuzzy ? p.bufFuzzyMatches() : p.bufMatches({})
-        cursor(cursorpos)
+        cursor(cursorpos)  # restore cursor position changed by BufMatches() (searchpos())
         p.candidates = matches->copy()->filter((_, v) => v =~# $'^{p.context}') +
             matches->copy()->filter((_, v) => v !~# $'^{p.context}')
-        p.keywords = p.candidates->copy()->map((_, val) => val->matchstr('\s*\zs\S\+$'))
+        p.keywords = p.candidates->mapnew((_, val) => val->matchstr('\s*\zs\S\+$'))
         if len(p.keywords) > 0
             p.showPopupMenu()
         endif
     endif
 enddef
 
+var selMatchId: number = 0
+
 # Select next/prev item in popup menu; wrap around at end of list.
 def SelectItem(popup: dict<any>, direction: string)
     var p = popup
     var count = p.keywords->len()
+
+    def MatchPosSel(lnum: number, offset: number = 0): list<any>
+        var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}'
+        var sline = p.keywords[p.index]
+        var pos = []
+        var startidx = 0
+        while true
+            var m = matchstrpos(sline, mpat, startidx)
+            if m == ["", -1, -1]
+                break
+            endif
+            pos->add([lnum, m[1] + 1 + offset, m[2] - m[1]])
+            startidx = m[2] + 1
+        endwhile
+        return pos
+    enddef
+
     def SelectVert()
         if p.winid->popup_getoptions().cursorline
             p.winid->popup_filter_menu(direction)
@@ -352,7 +373,8 @@ def SelectItem(popup: dict<any>, direction: string)
         endif
     enddef
 
-    def SelectHoriz()
+    def SelectHoriz(): string
+        var hmenu = ''
         var rotate = false
         if p.index == -1
             p.index = direction ==# 'j' ? 0 : count - 1
@@ -397,21 +419,48 @@ def SelectItem(popup: dict<any>, direction: string)
                 endif
                 return (overflowl ? '< ' : '') .. selected->join('  ') .. (overflowr ? ' >' : '')
             enddef
-            var hmenu = ''
             if direction ==# 'j'
                 hmenu = rotate ? HMenuStr(0, 'left') : HMenuStr(p.index, 'right')
             else
                 hmenu = rotate ? HMenuStr(p.keywords->len() - 1, 'right') : HMenuStr(p.index, 'left')
             endif
             hmenu->setbufline(p.winid->winbufnr(), 1)
+        else
+            hmenu = hmenustr
         endif
         clearmatches(p.winid)
+        selMatchId = 0
         var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}'
-        matchadd('AS_SearchCompletePrefix', mpat, 10, -1, {window: p.winid})
-        matchadd('PMenuSel', kwordpat, 11, -1, {window: p.winid})
+        matchadd('AutoSuggestSearchMatch', mpat, 10, -1, {window: p.winid})
+        if hlexists('PopupSelected')
+            matchadd('PopupSelected', kwordpat, 11, -1, {window: p.winid})
+        else
+            matchadd('PmenuSel', kwordpat, 11, -1, {window: p.winid})
+        endif
+        return hmenu
     enddef
 
-    options.pum ? SelectVert() : SelectHoriz()
+    var menustr = null_string
+    if options.pum
+        SelectVert()
+    else
+        menustr = SelectHoriz()
+    endif
+    if p.index >= 0 && p.index < p.keywords->len()
+        if selMatchId > 0
+            matchdelete(selMatchId, p.winid)
+            selMatchId = 0
+        endif
+        var lnum = options.pum ? getcurpos(p.winid)[1] : 1
+        var offset = 0
+        if !options.pum && menustr != null_string
+            offset = menustr->match($'\v\C<{p.keywords[p.index]}>')
+        endif
+        var pos = MatchPosSel(lnum, offset)
+        if !pos->empty()
+            selMatchId = matchaddpos('AutoSuggestSearchMatchSel', pos, 12, -1, {window: p.winid})
+        endif
+    endif
     clearmatches()
     setcmdline(p.candidates[p.index])
     if &hlsearch
@@ -479,9 +528,9 @@ def CompleteWord(popup: dict<any>)
         if options.pum
             attr->extend({ minwidth: 14 })
         else
-            attr->extend({ scrollbar: 0, padding: [0, 0, 0, 0], highlight: 'statusline' })
+            attr->extend({ scrollbar: 0, padding: [0, 0, 0, 0] })
         endif
-        p.winid = popup_menu([], attr)
+        p.winid = popup_menu([], attr->extend(options.popupattrs))
     endif
 
     p.updateMenu('')

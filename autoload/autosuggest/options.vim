@@ -9,17 +9,16 @@ export var options: dict<any> = {
         timeout: 100,	# millisec to search, when non-async is specified
         async: true,	# async search
         fuzzy: false,   # fuzzy completion
-        hidestatusline: false, # hide statusline temporarily when pum=false
-        removestatusline: false, # remove statusline temporarily when pum=false
+        hidestatusline: true, # hide statusline temporarily when pum=false
         alwayson: true, # when 'false' press <tab> to open popup menu
+        popupattrs: {}, # dictionary of attributes passed to popup window
     },
     cmd: {
         enable: true,
         delay: 10,      # delay in ms before showing popup
         pum: true,      # 'false' for flat menu, 'true' for stacked menu
         fuzzy: false,   # fuzzy completion
-        hidestatusline: false, # hide statusline temporarily when pum=false
-        removestatusline: false, # remove statusline temporarily when pum=false
+        hidestatusline: true, # hide statusline temporarily when pum=false
         exclude: [],    # keywords excluded from completion (use \c for ignorecase)
         autoexclude: ["'>", '^\a/', '^\A'], # keywords automatically excluded from completion
         onspace: [],    # show menu for keyword+space (ex. :find , :buffer , etc.)
@@ -28,8 +27,6 @@ export var options: dict<any> = {
         alwayson: true, # when 'false' press <tab> to open popup menu
     }
 }
-
-# XXX: hidestatusline (saving statusline) interferes with Quickfix list traversal (:cnext)
 
 if options.search.range < 10
     options.search.range = 10
@@ -42,24 +39,19 @@ endif
 var slsave = {
     saved: false,
     laststatus: 1,
-    statusline: '',
     showmode: false,
     ruler: false,
 }
 
 export def SaveStatusLine(opt: dict<any>)
-    if !opt.pum && (opt.hidestatusline || opt.removestatusline)
+    if !opt.pum && opt.hidestatusline
         slsave.saved = true
         slsave.statusline = &statusline
         slsave.laststatus = &laststatus
         slsave.showmode = &showmode
         slsave.ruler = &ruler
         :set noshowmode noruler
-        if opt.removestatusline
-            :set laststatus=0
-        else
-            :set statusline=%<
-        endif
+        :set laststatus=0
     endif
 enddef
 
@@ -72,11 +64,7 @@ export def RestoreStatusLine(opt: dict<any>)
         if slsave.ruler
             :set ruler
         endif
-        if opt.removestatusline
-            exec $'set laststatus={slsave.laststatus}'
-        else
-            exec $'set statusline={slsave.statusline}'
-        endif
+        exec $'set laststatus={slsave.laststatus}'
     endif
 enddef
 

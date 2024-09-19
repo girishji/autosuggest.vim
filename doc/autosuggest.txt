@@ -101,15 +101,20 @@ Default options are as follows.
 	        enable: true,   # 'false' will disable search completion
 	        maxheight: 12,  # line count of stacked menu
 	        pum: true,      # 'false' for flat menu, 'true' for stacked menu
+		hidestatusline: true, # hide statusline temporarily when pum=false
 	        fuzzy: false,   # fuzzy completion
 	        alwayson: true, # when 'false' press <tab> to open popup menu
+		popupattrs: {}, # dictionary of attributes passed to popup window
 	    },
 	    cmd: {
 	        enable: true,   # 'false' will disable command completion
 	        pum: true,      # 'false' for flat menu, 'true' for stacked menu
+		hidestatusline: true, # hide statusline temporarily when pum=false
 	        fuzzy: false,   # fuzzy completion
 	        exclude: [],    # keywords excluded from completion (use \c for ignorecase)
 	        onspace: [],    # show popup menu after keyword+space (ex. :buffer<space>, etc.)
+		alwayson: true, # when 'false' press <tab> to open popup menu
+		popupattrs: {}, # dictionary of attributes passed to popup window
 	    }
 	}
 
@@ -129,11 +134,16 @@ To enable and disable this plugin:
 
 Highlight Groups~
 
-Highlight group `AS_SearchCompletePrefix` affects style of the fragment of
-menu item that matches text being searched. Popup menu appearance is
-determined by Vim's highlight groups `Pmenu`, `PmenuSel`, `PmenuSbar` and
-`PmenuThumb`. For command completion `WildMenu` group (`:h hl-WildMenu`) can
-be used.
+The appearance of a popup window is controlled by the highlight groups listed
+in `:h popup-usage`. By default, many of these groups are linked to the
+`Pmenu` highlight groups. You can customize them by configuring the
+`popupattrs` dictionary (see above).
+
+To modify the highlight color of the selected item, adjust the `PopupSelected`
+group, which defaults to `PmenuSel`. Additionally, the
+`AutoSuggestSearchMatch` and `AutoSuggestSearchMatchSel` groups can be used to
+configure the highlight for matched text in both regular and selected menu
+items.
 
 A Note on Performance~
 

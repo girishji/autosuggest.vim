@@ -102,20 +102,21 @@ var options = {
     search: {
         enable: true,   # 'false' will disable search completion
         pum: true,      # 'false' for flat menu, 'true' for stacked menu
-        hidestatusline: false, # hide statusline temporarily when pum=false
-        removestatusline: false, # remove statusline temporarily when pum=false
+        hidestatusline: true, # hide statusline temporarily when pum=false
         maxheight: 12,  # max height of stacked menu in lines
         fuzzy: false,   # fuzzy completion
         alwayson: true, # when 'false' press <tab> to open popup menu
+        popupattrs: {}, # dictionary of attributes passed to popup window
     },
     cmd: {
         enable: true,   # 'false' will disable command completion
         pum: true,      # 'false' for flat menu, 'true' for stacked menu
-        hidestatusline: false, # hide statusline temporarily when pum=false
+        hidestatusline: true, # hide statusline temporarily when pum=false
         fuzzy: false,   # fuzzy completion
         exclude: [],    # patterns to exclude from command completion (use \c for ignorecase)
         onspace: [],    # show popup menu when cursor is in front of space (ex. :buffer<space>)
         alwayson: true, # when 'false' press <tab> to open popup menu
+        popupattrs: {}, # dictionary of attributes passed to popup window
     }
 }
 ```
@@ -146,13 +147,13 @@ echo g:AutoSuggestGetOptions()
 
 ### Highlight Groups
 
-The `AS_SearchCompletePrefix` highlight group influences the fragment of a menu item that matches the text being searched. The appearance of the popup menu is determined by Vim's highlight groups `Pmenu`, `PmenuSel`, `PmenuSbar`, and `PmenuThumb`. For command completion, the `WildMenu` group (refer to `:h hl-WildMenu`) can be utilized.
+The appearance of a popup window is controlled by the highlight groups listed in `:h popup-usage`. By default, many of these groups are linked to the `Pmenu` highlight groups. You can customize them by configuring the `popupattrs` dictionary (see above).
 
+To modify the highlight color of the selected item, adjust the `PopupSelected` group, which defaults to `PmenuSel`. Additionally, the `AutoSuggestSearchMatch` and `AutoSuggestSearchMatchSel` groups can be used to configure the highlight for matched text in both regular and selected menu items.
 
 ### Case Sensitive Search
 
-Set `ignorecase` and `smartcase` using `set` command. See `:h 'ignorecase'` and
-`h 'smartcase'`.
+Set `ignorecase` and `smartcase` using `set` command. See `:h 'ignorecase'` and `:h 'smartcase'`.
 
 ### Key Mapping
 
