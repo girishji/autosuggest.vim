@@ -191,7 +191,6 @@ def Init()
     PopupCreate()
     abbreviations = GetAbbrevs()
     CmdlineEnable()
-    opt.SaveStatusLine(options)
 enddef
 
 def Clear()
@@ -200,7 +199,6 @@ def Clear()
     :redraw
     ##
     popup_winid->popup_close()
-    opt.RestoreStatusLine(options)
     abbreviations = []
 enddef
 

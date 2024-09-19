@@ -9,7 +9,6 @@ export var options: dict<any> = {
         timeout: 100,	# millisec to search, when non-async is specified
         async: true,	# async search
         fuzzy: false,   # fuzzy completion
-        hidestatusline: true, # hide statusline temporarily when pum=false
         alwayson: true, # when 'false' press <tab> to open popup menu
         popupattrs: {}, # dictionary of attributes passed to popup window
     },
@@ -18,7 +17,6 @@ export var options: dict<any> = {
         delay: 10,      # delay in ms before showing popup
         pum: true,      # 'false' for flat menu, 'true' for stacked menu
         fuzzy: false,   # fuzzy completion
-        hidestatusline: true, # hide statusline temporarily when pum=false
         exclude: [],    # keywords excluded from completion (use \c for ignorecase)
         autoexclude: ["'>", '^\a/', '^\A'], # keywords automatically excluded from completion
         onspace: [],    # show menu for keyword+space (ex. :find , :buffer , etc.)
@@ -35,37 +33,5 @@ endif
 if options.search.fuzzy
     options.search.async = false
 endif
-
-var slsave = {
-    saved: false,
-    laststatus: 1,
-    showmode: false,
-    ruler: false,
-}
-
-export def SaveStatusLine(opt: dict<any>)
-    if !opt.pum && opt.hidestatusline
-        slsave.saved = true
-        slsave.statusline = &statusline
-        slsave.laststatus = &laststatus
-        slsave.showmode = &showmode
-        slsave.ruler = &ruler
-        :set noshowmode noruler
-        :set laststatus=0
-    endif
-enddef
-
-export def RestoreStatusLine(opt: dict<any>)
-    if slsave.saved
-        slsave.saved = false
-        if slsave.showmode
-            :set showmode
-        endif
-        if slsave.ruler
-            :set ruler
-        endif
-        exec $'set laststatus={slsave.laststatus}'
-    endif
-enddef
 
 # vim: tabstop=8 shiftwidth=4 softtabstop=4

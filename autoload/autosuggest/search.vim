@@ -46,13 +46,15 @@ enddef
 
 var completor = {}
 
+var bgPopupWinId: number
+
 def Init()
     completor = getcmdtype() == '/' ? NewPopup(true) : NewPopup(false)
     EnableCmdline()
-    opt.SaveStatusLine(options)
     if &incsearch
         completor.cursorpos = [line('.'), col('.')] # Cache the cursor position
     endif
+    bgPopupWinId = popup_create(' ', {line: &lines - &cmdheight, col: 1, minwidth: winwidth(0)})
 enddef
 
 def Clear()
@@ -63,7 +65,7 @@ def Clear()
     ##
     completor.winid->popup_close()
     completor = {}
-    opt.RestoreStatusLine(options)
+    bgPopupWinId->popup_close()
 enddef
 
 def Complete()

@@ -98,7 +98,6 @@ Default options are as follows.
 	        enable: true,   # 'false' will disable search completion
 	        maxheight: 12,  # line count of stacked menu
 	        pum: true,      # 'false' for flat menu, 'true' for stacked menu
-		hidestatusline: true, # hide statusline temporarily when pum=false
 	        fuzzy: false,   # fuzzy completion
 	        alwayson: true, # when 'false' press <tab> to open popup menu
 		popupattrs: {}, # dictionary of attributes passed to popup window
@@ -106,7 +105,6 @@ Default options are as follows.
 	    cmd: {
 	        enable: true,   # 'false' will disable command completion
 	        pum: true,      # 'false' for flat menu, 'true' for stacked menu
-		hidestatusline: true, # hide statusline temporarily when pum=false
 	        fuzzy: false,   # fuzzy completion
 	        exclude: [],    # keywords excluded from completion (use \c for ignorecase)
 	        onspace: [],    # show popup menu after keyword+space (ex. :buffer<space>, etc.)
