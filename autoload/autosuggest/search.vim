@@ -235,6 +235,11 @@ def HMenuWidth(): number
     return winwidth(0) - 4
 enddef
 
+def MatchedPattern(popup: dict<any>): string
+    var p = popup
+    return options.fuzzy ? $'\c[{p.context->split("\zs")}]' : (&ignorecase ? $'\c{p.context}' : p.context)
+enddef
+
 # Display popup menu.
 def ShowPopupMenu(popup: dict<any>)
     var p = popup
@@ -255,8 +260,7 @@ def ShowPopupMenu(popup: dict<any>)
     p.winid->popup_setoptions({cursorline: false})
     clearmatches(p.winid)
     selMatchId = 0
-    var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}'
-    matchadd('AutoSuggestSearchMatch', mpat, 10, -1, {window: p.winid})
+    matchadd('AutoSuggestSearchMatch', MatchedPattern(p), 10, -1, {window: p.winid})
     p.winid->popup_show()
     if !&incsearch # redraw only when noincsearch, otherwise highlight flickers
         :redraw
@@ -347,7 +351,7 @@ def SelectItem(popup: dict<any>, direction: string)
     var count = p.keywords->len()
 
     def MatchPosSel(lnum: number, offset: number = 0): list<any>
-        var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}'
+        var mpat = MatchedPattern(p)
         var sline = p.keywords[p.index]
         var pos = []
         var startidx = 0
@@ -430,8 +434,7 @@ def SelectItem(popup: dict<any>, direction: string)
         endif
         clearmatches(p.winid)
         selMatchId = 0
-        var mpat = options.fuzzy ? $'\c[{p.context->split("\zs")}]' : $'\c{p.context}'
-        matchadd('AutoSuggestSearchMatch', mpat, 10, -1, {window: p.winid})
+        matchadd('AutoSuggestSearchMatch', MatchedPattern(p), 10, -1, {window: p.winid})
         if hlexists('PopupSelected')
             matchadd('PopupSelected', kwordpat, 11, -1, {window: p.winid})
         else

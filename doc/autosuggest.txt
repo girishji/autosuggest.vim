@@ -66,7 +66,6 @@ Multiword Search~
 4. Installation					*autosuggest-installation*
 
 Install using vim-plug (https://github.com/junegunn/vim-plug)
-
 >
 	vim9script
 	plug#begin()
@@ -74,7 +73,6 @@ Install using vim-plug (https://github.com/junegunn/vim-plug)
 	plug#end()
 
 Legacy script:
-
 >
 	call plug#begin()
 	Plug 'girishji/autosuggest.vim'
@@ -93,7 +91,6 @@ Set `ignorecase` and `smartcase` using `set` command. See `:h 'ignorecase'` and
 Options~
 
 Default options are as follows.
-
 >
 	vim9script
 	var options = {
