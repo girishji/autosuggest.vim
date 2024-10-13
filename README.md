@@ -1,5 +1,7 @@
 
-**This plugin has been discontinued.
+-------------
+
+**This plugin has been _discontinued_.
 It has been superseded by [VimSuggest](https://github.com/girishji/vimsuggest), which offers significant improvements. Please migrate to it.**
 
 -------------
