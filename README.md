@@ -1,3 +1,8 @@
+<bold>
+This plugin has been discontinued.
+It has been superseded by [VimSuggest](https://github.com/girishji/vimsuggest), which offers significant improvements. Please migrate to it.
+</bold>
+
 <h1 align="center"> autosuggest.vim </h1>
 
 <h4 align="center"> Autocompletion for Vim's Command-line Mode (`/`, `?`, and `:` commands). </h4>
