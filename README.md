@@ -2,7 +2,7 @@
 -------------
 
 ![#f03c15](https://placehold.co/15x15/f03c15/f03c15.png) **Attention: This plugin has been _discontinued_.
-It has been superseded by ![VimSuggest](https://github.com/girishji/vimsuggest), which offers significant improvements. Please migrate to it.**
+It has been superseded by [VimSuggest](https://github.com/girishji/vimsuggest), which offers significant improvements. Please migrate to it.**
 
 -------------
 
